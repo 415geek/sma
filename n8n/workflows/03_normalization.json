@@ -1,0 +1,20 @@
+{
+  "name": "03_normalization",
+  "nodes": [],
+  "connections": {},
+  "active": false,
+  "settings": {},
+  "versionId": "00000000-0000-0000-0000-000000000003",
+  "meta": {
+    "aos": {
+      "phase": 2,
+      "purpose": "Research Agent 结构化抽取：sources → extracted_content + evidence_items",
+      "upstream": ["02_research_crawl"],
+      "downstream": ["04_strategic_analysis"],
+      "prompts": ["agents/prompts/research_agent.md"],
+      "schemas_openai": ["agents/schemas/openai/research_extraction.json"],
+      "db_tables": ["sources", "evidence_items", "workflow_tasks"]
+    }
+  }
+}
+

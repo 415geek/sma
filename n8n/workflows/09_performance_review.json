@@ -1,0 +1,20 @@
+{
+  "name": "09_performance_review",
+  "nodes": [],
+  "connections": {},
+  "active": false,
+  "settings": {},
+  "versionId": "00000000-0000-0000-0000-000000000009",
+  "meta": {
+    "aos": {
+      "phase": 2,
+      "purpose": "复盘：performance_metrics 聚合 → review_reports（可后续加复盘 Agent）",
+      "upstream": ["08_publishing"],
+      "downstream": [],
+      "prompts": [],
+      "schemas_openai": [],
+      "db_tables": ["performance_metrics", "review_reports", "workflow_tasks"]
+    }
+  }
+}
+

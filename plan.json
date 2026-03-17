@@ -1,0 +1,78 @@
+{
+  "project": "Agency Operating System (AOS)",
+  "version": "v1.0",
+  "goal": "面向营销代理机构的证据驱动运营操作系统：客户建档 → 研究抓取 → 分析洞察 → 报告 → 内容策略/日历 → 审批 → 发布 → 复盘。",
+  "architecture": {
+    "web": "Next.js（Client Portal / Strategy Workspace / Content Calendar / Performance Dashboard）",
+    "orchestration": "n8n（WF1-9 编排，多代理协作）",
+    "data": {
+      "primary_db": "PostgreSQL 15+（pgvector，用于 Brand Memory/RAG）",
+      "object_storage": "S3/R2/Minio（PDF/图片/视频/导出/快照）"
+    },
+    "models": [
+      "OpenAI（结构化分析/报告写作/策略/内容生成）",
+      "Browser automation（如 Nova Act，用于抓取与平台操作，V4）"
+    ]
+  },
+  "database_pricing_assumptions_2026": {
+    "supabase": {
+      "plan_candidate": "Pro",
+      "baseline_monthly_usd": 25,
+      "notes": [
+        "Pro 常见包含 1 个基础计算档（Micro 等）+ 一定配额；超出按计算/磁盘/流量计费（以官方账单为准）。",
+        "pgvector 属于 Postgres 扩展能力，一般随数据库计算档位而定，不单独计费。",
+        "适合：需要快速集成 Auth/Storage/Row Level Security 的一体化方案。"
+      ],
+      "source_hint": "Supabase Docs: billing + compute and disk"
+    },
+    "neon": {
+      "plan_candidate": "Launch（usage-based）",
+      "compute_pricing_model": "CU-hour 计费（按使用）",
+      "storage_pricing_model": "GB-month 计费（按使用）",
+      "notes": [
+        "适合：Serverless/分支数据库/按需扩缩，研发与环境隔离成本低。",
+        "pgvector 支持良好，适配 RAG 场景（索引构建可受益于 autoscaling）。"
+      ],
+      "source_hint": "Neon pricing + docs"
+    },
+    "aws_rds": {
+      "baseline_instance_example": "db.t4g.micro (1GB)",
+      "baseline_monthly_usd_estimate": 11.68,
+      "notes": [
+        "适合：更强的可控性/网络与合规要求；但需要自行搭配对象存储、Auth、RLS 等能力。",
+        "还需叠加：存储、备份、IO、出入站流量等费用。"
+      ],
+      "source_hint": "AWS RDS for PostgreSQL pricing"
+    },
+    "recommendation": {
+      "v1_default": "Supabase Pro（最快交付、最少基础设施工作量）",
+      "scale_or_multi_env": "Neon（分支 + usage-based 适合多环境与迭代）",
+      "enterprise": "AWS RDS（网络/合规/自管需求）"
+    }
+  },
+  "delivery_scope": {
+    "v1_strategy_copilot": {
+      "includes": [
+        "数据库：迁移脚本（schema v1.0）+ 基础种子配置",
+        "工作流：n8n WF1-9 的骨架与数据流对齐（先占位，后逐步填充节点实现）",
+        "Agents：prompts 与输出 JSON schema（evidence/insight/report/content_plan/content_asset）占位",
+        "本地开发：docker-compose（Postgres+pgvector、n8n、Minio）",
+        "Web：最小可用的管理界面骨架（Clients/Projects/Research/Strategy/Content/Performance）"
+      ],
+      "acceptance_criteria": [
+        "可一键启动本地基础设施（db + n8n + storage）",
+        "可成功应用数据库迁移并通过 pgvector 扩展检查",
+        "可创建 client 与 project（最小字段）并驱动项目状态流转",
+        "可在数据表中落库 sources/evidence/insights/reports 的最小链路（先手工/脚本模拟）"
+      ]
+    }
+  },
+  "next_actions": [
+    "落地数据库迁移（001_initial_schema.sql）并拆分 seeds",
+    "补齐 agents prompts + schemas（先严格 JSON schema）",
+    "生成 n8n workflows 占位文件并定义输入输出契约",
+    "初始化 Next.js web 应用骨架（路由与页面占位）",
+    "增加本地 docker-compose 与 README 快速启动说明"
+  ]
+}
+

@@ -1,0 +1,17 @@
+{
+  "brand_name": "AOS Demo Brand",
+  "voice": {
+    "tone": "直接、友好、不过度鸡汤",
+    "style_rules": ["短句优先", "避免空泛口号", "给出可执行步骤"],
+    "emoji_policy": "minimal"
+  },
+  "visual_style": "干净、对比强、字幕大字、品牌色点缀",
+  "proof_points": ["累计服务 100+ 客户（示例）", "7 天计划可落地（示例）"],
+  "forbidden_words": ["包治百病", "立刻暴富", "100%保证"],
+  "hashtag_library": {
+    "branded": ["aos", "aosdemo"],
+    "industry": ["productivity", "habits"],
+    "local": []
+  }
+}
+

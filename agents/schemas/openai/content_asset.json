@@ -1,0 +1,171 @@
+{
+  "name": "content_asset",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "required": ["asset_id", "platform", "content_type", "caption", "hashtags", "production_guide"],
+    "additionalProperties": false,
+    "properties": {
+      "asset_id": { "type": "string", "description": "Format: CA-{brief_id}" },
+      "platform": { "type": "string" },
+      "content_type": { "type": "string" },
+      "content_format": { "type": "string" },
+      "caption": {
+        "type": "object",
+        "required": ["primary", "character_count"],
+        "additionalProperties": false,
+        "properties": {
+          "primary": {
+            "type": "string",
+            "description": "Main caption text with emojis and formatting"
+          },
+          "character_count": { "type": "integer" },
+          "alternative": {
+            "type": ["string", "null"],
+            "description": "Alternative caption version"
+          },
+          "hook_line": {
+            "type": "string",
+            "description": "First line extracted for analysis"
+          }
+        }
+      },
+      "video_script": {
+        "type": ["object", "null"],
+        "additionalProperties": false,
+        "required": ["total_duration", "scenes"],
+        "description": "Required for video content types",
+        "properties": {
+          "total_duration": { "type": "string" },
+          "hook_duration": { "type": "string" },
+          "scenes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["scene_number", "duration", "visual", "audio"],
+              "additionalProperties": false,
+              "properties": {
+                "scene_number": { "type": "integer" },
+                "duration": { "type": "string" },
+                "visual": { "type": "string", "description": "What the viewer sees" },
+                "audio": { "type": "string", "description": "Voiceover, dialogue, or music" },
+                "text_overlay": { "type": ["string", "null"], "description": "On-screen text" },
+                "transition": { "type": ["string", "null"], "description": "Cut, fade, swipe, etc." }
+              }
+            }
+          },
+          "music_suggestion": { "type": ["string", "null"] },
+          "pacing_notes": { "type": ["string", "null"] }
+        }
+      },
+      "carousel_slides": {
+        "type": ["array", "null"],
+        "description": "Required for carousel content type",
+        "items": {
+          "type": "object",
+          "required": ["slide_number", "headline", "body", "visual_direction"],
+          "additionalProperties": false,
+          "properties": {
+            "slide_number": { "type": "integer" },
+            "headline": { "type": "string" },
+            "body": { "type": ["string", "null"] },
+            "visual_direction": { "type": "string" },
+            "cta": { "type": ["string", "null"] }
+          }
+        }
+      },
+      "cover_title": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["main_title"],
+        "properties": {
+          "main_title": {
+            "type": "string",
+            "description": "Thumbnail/cover text (8 words max)"
+          },
+          "subtitle": { "type": ["string", "null"] },
+          "design_notes": { "type": ["string", "null"] }
+        }
+      },
+      "shot_list": {
+        "type": ["array", "null"],
+        "description": "For video/photo production",
+        "items": {
+          "type": "object",
+          "required": ["shot_number", "shot_type", "description"],
+          "additionalProperties": false,
+          "properties": {
+            "shot_number": { "type": "integer" },
+            "shot_type": {
+              "type": "string",
+              "enum": [
+                "wide",
+                "medium",
+                "close_up",
+                "extreme_close_up",
+                "overhead",
+                "pov",
+                "tracking",
+                "static"
+              ]
+            },
+            "description": { "type": "string" },
+            "duration": { "type": ["string", "null"] },
+            "equipment_notes": { "type": ["string", "null"] },
+            "lighting_notes": { "type": ["string", "null"] }
+          }
+        }
+      },
+      "ai_prompts": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["image_prompt"],
+        "properties": {
+          "image_prompt": {
+            "type": "string",
+            "description": "Detailed prompt for AI image generation"
+          },
+          "video_prompt": { "type": ["string", "null"], "description": "Prompt for AI video generation" },
+          "style_modifiers": { "type": "array", "items": { "type": "string" } },
+          "negative_prompt": { "type": ["string", "null"], "description": "What to avoid in generation" }
+        }
+      },
+      "hashtags": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["primary", "secondary", "total_count"],
+        "properties": {
+          "primary": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "High-relevance, lower-volume hashtags"
+          },
+          "secondary": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Broader reach hashtags"
+          },
+          "branded": { "type": "array", "items": { "type": "string" } },
+          "total_count": { "type": "integer" }
+        }
+      },
+      "mentions": { "type": "array", "items": { "type": "string" } },
+      "production_guide": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["asset_checklist", "estimated_production_time"],
+        "properties": {
+          "asset_checklist": { "type": "array", "items": { "type": "string" } },
+          "estimated_production_time": { "type": "string" },
+          "skill_level_required": {
+            "type": "string",
+            "enum": ["basic", "intermediate", "advanced"]
+          },
+          "tools_needed": { "type": "array", "items": { "type": "string" } },
+          "notes": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}
+

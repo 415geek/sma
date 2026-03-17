@@ -1,0 +1,183 @@
+{
+  "run_id": "P3-CPL-202603-v1-20260317-v1",
+  "strategy_id": null,
+  "plan_id": "CPL-202603-v1",
+  "jobs": [
+    {
+      "job_id": "JOB-CPL-202603-v1-CB-W1-IR-01-1",
+      "source_brief_id": "CB-W1-IR-01",
+      "platform": "instagram",
+      "target_agent": "creative_production_agent",
+      "input_payload": {
+        "brief_id": "CB-W1-IR-01",
+        "content_brief": {
+          "brief_id": "CB-W1-IR-01",
+          "platform": "instagram",
+          "content_type": "reel",
+          "pillar": "教育干货",
+          "scheduled_date": "2026-03-17",
+          "scheduled_time": "21:30",
+          "target_persona": "忙碌上班族",
+          "goal": "engagement",
+          "hook": "别再硬撑了，你只需要这 1 个方法",
+          "key_message": "小而可持续的行动更容易坚持并产生复利。",
+          "supporting_points": [
+            "把目标缩小到 2 分钟可完成",
+            "把触发条件写出来（何时何地）",
+            "把奖励设计成即时可感知"
+          ],
+          "cta": "评论区打个“我开始了”，我把 7 天模板发你",
+          "tone": "直接、鼓励、轻松",
+          "visual_direction": "快节奏口播 + 关键字大字幕 + B-roll 切换",
+          "required_assets": ["手机竖屏拍摄", "字幕模板", "B-roll（办公/通勤/夜晚）"],
+          "reference_links": [],
+          "hashtag_strategy": {
+            "primary": ["habits", "productivity", "selfimprovement"],
+            "secondary": ["routine", "mindset", "motivation"]
+          },
+          "mentions": [],
+          "production_notes": "开头 1 秒要有强字幕；结尾留钩子引导评论。"
+        },
+        "brand_context": {
+          "brand_name": "AOS Demo Brand",
+          "voice": {
+            "tone": "直接、友好、不过度鸡汤",
+            "style_rules": ["短句优先", "避免空泛口号", "给出可执行步骤"],
+            "emoji_policy": "minimal"
+          },
+          "visual_style": "干净、对比强、字幕大字、品牌色点缀",
+          "proof_points": ["累计服务 100+ 客户（示例）", "7 天计划可落地（示例）"],
+          "forbidden_words": ["包治百病", "立刻暴富", "100%保证"],
+          "hashtag_library": {
+            "branded": ["aos", "aosdemo"],
+            "industry": ["productivity", "habits"],
+            "local": []
+          }
+        }
+      },
+      "output_schema": "content_asset",
+      "priority": "hero",
+      "notes": null
+    },
+    {
+      "job_id": "JOB-CPL-202603-v1-CB-W1-IR-01-2",
+      "source_brief_id": "CB-W1-IR-01",
+      "platform": "instagram",
+      "target_agent": "qa_compliance_agent",
+      "input_payload": {
+        "content_asset": {},
+        "content_brief": {
+          "brief_id": "CB-W1-IR-01",
+          "platform": "instagram",
+          "content_type": "reel",
+          "pillar": "教育干货",
+          "scheduled_date": "2026-03-17",
+          "scheduled_time": "21:30",
+          "target_persona": "忙碌上班族",
+          "goal": "engagement",
+          "hook": "别再硬撑了，你只需要这 1 个方法",
+          "key_message": "小而可持续的行动更容易坚持并产生复利。",
+          "supporting_points": [
+            "把目标缩小到 2 分钟可完成",
+            "把触发条件写出来（何时何地）",
+            "把奖励设计成即时可感知"
+          ],
+          "cta": "评论区打个“我开始了”，我把 7 天模板发你",
+          "tone": "直接、鼓励、轻松",
+          "visual_direction": "快节奏口播 + 关键字大字幕 + B-roll 切换",
+          "required_assets": ["手机竖屏拍摄", "字幕模板", "B-roll（办公/通勤/夜晚）"],
+          "reference_links": [],
+          "hashtag_strategy": {
+            "primary": ["habits", "productivity", "selfimprovement"],
+            "secondary": ["routine", "mindset", "motivation"]
+          },
+          "mentions": [],
+          "production_notes": "开头 1 秒要有强字幕；结尾留钩子引导评论。"
+        },
+        "brand_guidelines": {
+          "brand_name": "AOS Demo Brand",
+          "voice": {
+            "tone": "直接、友好、不过度鸡汤",
+            "style_rules": ["短句优先", "避免空泛口号", "给出可执行步骤"],
+            "emoji_policy": "minimal"
+          },
+          "visual_style": "干净、对比强、字幕大字、品牌色点缀",
+          "proof_points": ["累计服务 100+ 客户（示例）", "7 天计划可落地（示例）"],
+          "forbidden_words": ["包治百病", "立刻暴富", "100%保证"],
+          "hashtag_library": {
+            "branded": ["aos", "aosdemo"],
+            "industry": ["productivity", "habits"],
+            "local": []
+          }
+        },
+        "platform": { "name": "instagram" },
+        "evidence_items": []
+      },
+      "output_schema": "qa_review",
+      "priority": "hero",
+      "notes": "运行时请将上一条 creative job 的 content_asset 注入 content_asset 字段。"
+    },
+    {
+      "job_id": "JOB-CPL-202603-v1-CB-W1-IG-02-1",
+      "source_brief_id": "CB-W1-IG-02",
+      "platform": "instagram",
+      "target_agent": "creative_production_agent",
+      "input_payload": {
+        "brief_id": "CB-W1-IG-02",
+        "content_brief": {
+          "brief_id": "CB-W1-IG-02",
+          "platform": "instagram",
+          "content_type": "carousel",
+          "pillar": "教育干货",
+          "scheduled_date": "2026-03-19",
+          "scheduled_time": "11:30",
+          "target_persona": "想提升状态的学生/上班族",
+          "goal": "traffic",
+          "hook": "收藏这份清单：7 天焕新计划",
+          "key_message": "把目标拆成 7 天微行动，才能真正执行。",
+          "supporting_points": ["每天 1 个可执行动作", "每个动作 < 10 分钟", "最后一天复盘并巩固"],
+          "cta": "想要可打印版本？私信我“清单”",
+          "tone": "清晰、靠谱、友好",
+          "visual_direction": "统一模板、数字进度条、每页 1 句话 + 1 行行动",
+          "required_assets": ["轮播模板", "图标素材", "品牌色背景"],
+          "reference_links": [],
+          "hashtag_strategy": {
+            "primary": ["productivity", "checklist", "habits"],
+            "secondary": ["study", "worklife", "reset"]
+          },
+          "mentions": [],
+          "production_notes": "第一页必须是强利益点；最后一页要有分享/收藏引导。"
+        },
+        "brand_context": {
+          "brand_name": "AOS Demo Brand",
+          "voice": {
+            "tone": "直接、友好、不过度鸡汤",
+            "style_rules": ["短句优先", "避免空泛口号", "给出可执行步骤"],
+            "emoji_policy": "minimal"
+          },
+          "visual_style": "干净、对比强、字幕大字、品牌色点缀",
+          "proof_points": ["累计服务 100+ 客户（示例）", "7 天计划可落地（示例）"],
+          "forbidden_words": ["包治百病", "立刻暴富", "100%保证"],
+          "hashtag_library": {
+            "branded": ["aos", "aosdemo"],
+            "industry": ["productivity", "habits"],
+            "local": []
+          }
+        }
+      },
+      "output_schema": "content_asset",
+      "priority": "hero",
+      "notes": null
+    }
+  ],
+  "routing_summary": {
+    "counts_by_target_agent": {
+      "creative_production_agent": 2,
+      "qa_compliance_agent": 1
+    },
+    "counts_by_platform": {
+      "instagram": 3
+    }
+  }
+}
+

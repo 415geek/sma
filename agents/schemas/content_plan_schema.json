@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aos.local/schemas/content_plan_schema.json",
+  "title": "ContentPlan",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "plan_month": { "type": "string", "format": "date", "description": "YYYY-MM-01 形式" },
+    "month_theme": { "type": ["string", "null"] },
+    "month_objectives": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "platform_strategy": { "type": "object" },
+    "content_pillars": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "percentage": { "type": "number", "minimum": 0, "maximum": 100 },
+          "themes": { "type": "array", "items": { "type": "string" }, "default": [] }
+        },
+        "required": ["name", "percentage"]
+      }
+    },
+    "key_dates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "date": { "type": "string", "format": "date" },
+          "event": { "type": "string" },
+          "content_angle": { "type": ["string", "null"] }
+        },
+        "required": ["date", "event"]
+      },
+      "default": []
+    },
+    "kpis": { "type": "object", "default": {} },
+    "weeks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "week_number": { "type": "integer", "minimum": 1, "maximum": 6 },
+          "week_start_date": { "type": "string", "format": "date" },
+          "week_end_date": { "type": "string", "format": "date" },
+          "week_theme": { "type": ["string", "null"] },
+          "week_objectives": { "type": "array", "items": { "type": "string" }, "default": [] },
+          "plan": { "type": "object", "description": "按 weekday 分组的发布计划" }
+        },
+        "required": ["week_number", "week_start_date", "week_end_date", "plan"]
+      },
+      "default": []
+    }
+  },
+  "required": ["plan_month", "platform_strategy", "content_pillars"]
+}
+

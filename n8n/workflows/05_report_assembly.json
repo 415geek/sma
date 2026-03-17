@@ -1,0 +1,20 @@
+{
+  "name": "05_report_assembly",
+  "nodes": [],
+  "connections": {},
+  "active": false,
+  "settings": {},
+  "versionId": "00000000-0000-0000-0000-000000000005",
+  "meta": {
+    "aos": {
+      "phase": 2,
+      "purpose": "Report Writer 汇总：strategic_framework + insights + evidence → reports.report_json",
+      "upstream": ["04_strategic_analysis"],
+      "downstream": ["06_content_strategy"],
+      "prompts": ["agents/prompts/report_writer_agent.md"],
+      "schemas_openai": ["agents/schemas/openai/diagnostic_report.json"],
+      "db_tables": ["reports", "approval_records", "workflow_tasks"]
+    }
+  }
+}
+

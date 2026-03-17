@@ -1,0 +1,20 @@
+{
+  "name": "02_research_crawl",
+  "nodes": [],
+  "connections": {},
+  "active": false,
+  "settings": {},
+  "versionId": "00000000-0000-0000-0000-000000000002",
+  "meta": {
+    "aos": {
+      "phase": 2,
+      "purpose": "抓取并写入 sources.raw_content（抓取实现可后续接 Browser automation/脚本）",
+      "upstream": ["01_client_intake"],
+      "downstream": ["03_normalization"],
+      "prompts": [],
+      "schemas_openai": [],
+      "db_tables": ["sources"]
+    }
+  }
+}
+

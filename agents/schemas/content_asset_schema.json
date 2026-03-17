@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aos.local/schemas/content_asset_schema.json",
+  "title": "ContentAsset",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "platform": { "type": "string", "minLength": 1 },
+    "content_type": { "type": "string", "minLength": 1 },
+    "content_format": { "type": ["string", "null"] },
+    "title": { "type": ["string", "null"] },
+    "content_pillar": { "type": ["string", "null"] },
+    "scheduled_date": { "type": ["string", "null"], "format": "date" },
+    "scheduled_time": { "type": ["string", "null"], "pattern": "^[0-9]{2}:[0-9]{2}(:[0-9]{2})?$" },
+    "brief": { "type": "object", "description": "brief_json 对应对象" },
+    "caption": { "type": ["string", "null"] },
+    "caption_versions": { "type": "array", "items": { "type": "object" }, "default": [] },
+    "script": { "type": ["object", "null"] },
+    "shot_list": { "type": ["array", "null"], "items": { "type": "object" } },
+    "hashtags": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "keywords": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "mentions": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "image_prompt": { "type": ["string", "null"] },
+    "video_prompt": { "type": ["string", "null"] },
+    "asset_urls": { "type": "array", "items": { "type": "object" }, "default": [] }
+  },
+  "required": ["platform", "content_type", "brief"]
+}
+

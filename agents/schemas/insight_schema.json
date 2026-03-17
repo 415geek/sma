@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aos.local/schemas/insight_schema.json",
+  "title": "Insight",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "module": {
+      "type": "string",
+      "enum": [
+        "industry_analysis",
+        "brand_analysis",
+        "audience_analysis",
+        "competitive_analysis",
+        "content_opportunity",
+        "risk_assessment"
+      ]
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "finding": { "type": "string", "minLength": 1 },
+    "evidence_codes": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^EV-[0-9]{3,}$" },
+      "minItems": 1
+    },
+    "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+    "gaps": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "assumptions": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "business_implication": { "type": ["string", "null"] },
+    "recommended_action": { "type": ["string", "null"] },
+    "priority": { "type": "string", "enum": ["high", "medium", "low"] }
+  },
+  "required": ["module", "title", "finding", "evidence_codes", "confidence", "priority"]
+}
+

@@ -1,0 +1,20 @@
+{
+  "name": "06_content_strategy",
+  "nodes": [],
+  "connections": {},
+  "active": false,
+  "settings": {},
+  "versionId": "00000000-0000-0000-0000-000000000006",
+  "meta": {
+    "aos": {
+      "phase": 2,
+      "purpose": "Content Strategist：strategic_framework → content_plans + weekly_plans",
+      "upstream": ["05_report_assembly"],
+      "downstream": ["07_asset_generation"],
+      "prompts": ["agents/prompts/content_strategist_agent.md"],
+      "schemas_openai": ["agents/schemas/openai/content_plan.json"],
+      "db_tables": ["content_plans", "weekly_plans", "workflow_tasks"]
+    }
+  }
+}
+

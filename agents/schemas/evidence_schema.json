@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aos.local/schemas/evidence_schema.json",
+  "title": "EvidenceItem",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "evidence_code": { "type": "string", "pattern": "^EV-[0-9]{3,}$" },
+    "statement": { "type": "string", "minLength": 1 },
+    "excerpt": { "type": ["string", "null"] },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_id": { "type": ["string", "null"], "description": "UUID（若已入库 sources）" },
+        "source_url": { "type": ["string", "null"] },
+        "source_type": { "type": ["string", "null"] },
+        "source_date": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "category": { "type": ["string", "null"] },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+    "confidence_reason": { "type": ["string", "null"] }
+  },
+  "required": ["statement", "confidence"]
+}
+

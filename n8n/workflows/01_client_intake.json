@@ -1,0 +1,20 @@
+{
+  "name": "01_client_intake",
+  "nodes": [],
+  "connections": {},
+  "active": false,
+  "settings": {},
+  "versionId": "00000000-0000-0000-0000-000000000001",
+  "meta": {
+    "aos": {
+      "phase": 2,
+      "purpose": "Client + Project 创建/更新；写入 clients/projects；初始化 workflow_tasks",
+      "upstream": [],
+      "downstream": ["02_research_crawl"],
+      "prompts": [],
+      "schemas_openai": [],
+      "db_tables": ["clients", "projects", "workflow_tasks"]
+    }
+  }
+}
+

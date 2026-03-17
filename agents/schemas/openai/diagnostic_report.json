@@ -1,0 +1,294 @@
+{
+  "name": "diagnostic_report",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "required": [
+      "report_id",
+      "report_metadata",
+      "executive_summary",
+      "key_findings",
+      "brand_market_analysis",
+      "audience_analysis",
+      "competitive_analysis",
+      "content_opportunities",
+      "strategic_recommendations",
+      "roadmap",
+      "risk_assessment",
+      "evidence_register",
+      "confidence_appendix"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "report_id": {
+        "type": "string",
+        "description": "Format: RPT-{project_id_short}-{version}-{timestamp}"
+      },
+      "report_metadata": {
+        "type": "object",
+        "required": [
+          "client_name",
+          "report_type",
+          "version",
+          "generated_at",
+          "total_evidence_items",
+          "overall_confidence"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "client_name": { "type": "string" },
+          "report_type": { "type": "string" },
+          "version": { "type": "integer" },
+          "generated_at": { "type": "string" },
+          "total_evidence_items": { "type": "integer" },
+          "overall_confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "data_coverage": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["brand_data", "competitor_data", "audience_data", "market_data"],
+            "properties": {
+              "brand_data": {
+                "type": "string",
+                "enum": ["comprehensive", "adequate", "limited", "minimal"]
+              },
+              "competitor_data": { "type": "string" },
+              "audience_data": { "type": "string" },
+              "market_data": { "type": "string" }
+            }
+          }
+        }
+      },
+      "executive_summary": {
+        "type": "object",
+        "required": [
+          "headline",
+          "situation",
+          "key_insight",
+          "strategic_direction",
+          "top_priorities",
+          "expected_outcomes"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "headline": {
+            "type": "string",
+            "description": "One sentence capturing the core strategic opportunity"
+          },
+          "situation": {
+            "type": "string",
+            "description": "2-3 sentences on current state"
+          },
+          "key_insight": { "type": "string", "description": "The single most important finding" },
+          "strategic_direction": { "type": "string", "description": "Recommended strategic path" },
+          "top_priorities": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "required": ["priority", "rationale", "evidence_codes"],
+              "additionalProperties": false,
+              "properties": {
+                "priority": { "type": "string" },
+                "rationale": { "type": "string" },
+                "evidence_codes": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "expected_outcomes": {
+            "type": "array",
+            "maxItems": 4,
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "key_findings": {
+        "type": "array",
+        "description": "Top 5-7 most important findings, ranked by priority",
+        "items": {
+          "type": "object",
+          "required": [
+            "finding_id",
+            "headline",
+            "detail",
+            "evidence_codes",
+            "confidence",
+            "implication",
+            "action"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "finding_id": { "type": "string" },
+            "headline": { "type": "string" },
+            "detail": { "type": "string" },
+            "evidence_codes": { "type": "array", "items": { "type": "string" } },
+            "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+            "implication": { "type": "string" },
+            "action": { "type": "string" },
+            "priority": { "type": "string", "enum": ["critical", "high", "medium", "low"] }
+          }
+        }
+      },
+      "brand_market_analysis": {
+        "type": "object",
+        "required": ["section_summary", "industry_context", "brand_assessment", "market_position"],
+        "additionalProperties": false,
+        "properties": {
+          "section_summary": { "type": "string" },
+          "industry_context": {
+            "type": "object",
+            "required": ["overview", "trends", "challenges", "opportunities"],
+            "additionalProperties": false,
+            "properties": {
+              "overview": { "type": "string" },
+              "trends": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["trend", "relevance", "evidence_codes"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "trend": { "type": "string" },
+                    "relevance": { "type": "string" },
+                    "evidence_codes": { "type": "array", "items": { "type": "string" } }
+                  }
+                }
+              },
+              "challenges": { "type": "array", "items": { "type": "string" } },
+              "opportunities": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "brand_assessment": {
+            "type": "object",
+            "required": [
+              "current_positioning",
+              "brand_strengths",
+              "brand_weaknesses",
+              "messaging_consistency"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "current_positioning": {
+                "type": "object",
+                "required": ["description", "evidence_codes"],
+                "additionalProperties": false,
+                "properties": {
+                  "description": { "type": "string" },
+                  "evidence_codes": { "type": "array", "items": { "type": "string" } }
+                }
+              },
+              "brand_strengths": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["strength", "evidence_codes"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "strength": { "type": "string" },
+                    "evidence_codes": { "type": "array", "items": { "type": "string" } }
+                  }
+                }
+              },
+              "brand_weaknesses": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["weakness", "impact", "evidence_codes"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "weakness": { "type": "string" },
+                    "impact": { "type": "string" },
+                    "evidence_codes": { "type": "array", "items": { "type": "string" } }
+                  }
+                }
+              },
+              "messaging_consistency": {
+                "type": "object",
+                "required": ["assessment", "gaps"],
+                "additionalProperties": false,
+                "properties": {
+                  "assessment": { "type": "string" },
+                  "gaps": { "type": "array", "items": { "type": "string" } }
+                }
+              }
+            }
+          },
+          "market_position": {
+            "type": "object",
+            "required": ["position_description", "differentiation_level"],
+            "additionalProperties": false,
+            "properties": {
+              "position_description": { "type": "string" },
+              "differentiation_level": {
+                "type": "string",
+                "enum": [
+                  "highly_differentiated",
+                  "moderately_differentiated",
+                  "low_differentiation",
+                  "commoditized"
+                ]
+              },
+              "position_evidence": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      },
+      "audience_analysis": { "type": "object" },
+      "competitive_analysis": { "type": "object" },
+      "content_opportunities": { "type": "object" },
+      "strategic_recommendations": { "type": "object" },
+      "roadmap": { "type": "object" },
+      "risk_assessment": { "type": "object" },
+      "evidence_register": {
+        "type": "array",
+        "description": "Complete evidence register for traceability",
+        "items": {
+          "type": "object",
+          "required": ["evidence_code", "statement", "source_type", "confidence"],
+          "additionalProperties": false,
+          "properties": {
+            "evidence_code": { "type": "string" },
+            "statement": { "type": "string" },
+            "source_type": { "type": "string" },
+            "source_url": { "type": ["string", "null"] },
+            "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+            "used_in_sections": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      },
+      "confidence_appendix": {
+        "type": "object",
+        "required": [
+          "overall_assessment",
+          "high_confidence_findings",
+          "medium_confidence_findings",
+          "low_confidence_findings",
+          "data_gaps",
+          "recommendations_for_validation"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "overall_assessment": { "type": "string" },
+          "high_confidence_findings": { "type": "array", "items": { "type": "string" } },
+          "medium_confidence_findings": { "type": "array", "items": { "type": "string" } },
+          "low_confidence_findings": { "type": "array", "items": { "type": "string" } },
+          "data_gaps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["gap", "impact", "recommendation"],
+              "additionalProperties": false,
+              "properties": {
+                "gap": { "type": "string" },
+                "impact": { "type": "string" },
+                "recommendation": { "type": "string" }
+              }
+            }
+          },
+          "recommendations_for_validation": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}
+
+

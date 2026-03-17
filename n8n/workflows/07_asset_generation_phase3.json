@@ -1,0 +1,296 @@
+{
+  "name": "07_asset_generation_phase3",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "aos/phase3/asset-generation",
+        "httpMethod": "POST",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "0c2b2c8d-6c2b-4a7a-9c1e-6f1b3a6a0001",
+      "name": "Trigger (Webhook)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [-760, 220]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [],
+          "object": [
+            {
+              "name": "content_plan",
+              "value": "={{$json.body.content_plan}}"
+            },
+            {
+              "name": "brand_context",
+              "value": "={{$json.body.brand_context}}"
+            },
+            {
+              "name": "brand_memory",
+              "value": "={{$json.body.brand_memory}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0c2b2c8d-6c2b-4a7a-9c1e-6f1b3a6a0002",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [-520, 220]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "jsonBody": "={{ {\n  \"model\": \"gpt-4o-mini\",\n  \"input\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"\" + $json.__orchestrator_system\n    },\n    {\n      \"role\": \"user\",\n      \"content\": JSON.stringify({\n        content_plan: $json.content_plan,\n        brand_context: $json.brand_context,\n        brand_memory: $json.brand_memory\n      })\n    }\n  ],\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": " +
+                  "{\"name\":\"phase3_production_plan\",\"strict\":true,\"schema\":{}}"
+                + "\n  }\n} }}",
+        "options": {}
+      },
+      "id": "0c2b2c8d-6c2b-4a7a-9c1e-6f1b3a6a0003",
+      "name": "Generate Production Plan (OpenAI)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [-260, 220]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "object": [
+            {
+              "name": "phase3_production_plan",
+              "value": "={{$json.body.output[0].content[0].json}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0c2b2c8d-6c2b-4a7a-9c1e-6f1b3a6a0004",
+      "name": "Extract Production Plan",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [-20, 220]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "phase3_production_plan.jobs",
+        "options": {}
+      },
+      "id": "0c2b2c8d-6c2b-4a7a-9c1e-6f1b3a6a0005",
+      "name": "Split Jobs",
+      "type": "n8n-nodes-base.itemLists",
+      "typeVersion": 1,
+      "position": [220, 220]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.target_agent}}",
+              "operation": "equals",
+              "value2": "creative_production_agent"
+            }
+          ]
+        }
+      },
+      "id": "0c2b2c8d-6c2b-4a7a-9c1e-6f1b3a6a0006",
+      "name": "If Creative Job",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [460, 120]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.target_agent}}",
+              "operation": "equals",
+              "value2": "qa_compliance_agent"
+            }
+          ]
+        }
+      },
+      "id": "0c2b2c8d-6c2b-4a7a-9c1e-6f1b3a6a0007",
+      "name": "If QA Job",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [460, 320]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "jsonBody": "={{ {\n  \"model\": \"gpt-4o\",\n  \"input\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"\" + $json.__creative_system\n    },\n    {\n      \"role\": \"user\",\n      \"content\": JSON.stringify($json.input_payload)\n    }\n  ],\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": " +
+                  "{\"name\":\"content_asset\",\"strict\":true,\"schema\":{}}"
+                + "\n  }\n}\n} }}",
+        "options": {}
+      },
+      "id": "0c2b2c8d-6c2b-4a7a-9c1e-6f1b3a6a0008",
+      "name": "Run Creative Production (OpenAI)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [720, 120]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/responses",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "jsonBody": "={{ {\n  \"model\": \"gpt-4o-mini\",\n  \"input\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"\" + $json.__qa_system\n    },\n    {\n      \"role\": \"user\",\n      \"content\": JSON.stringify($json.input_payload)\n    }\n  ],\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": " +
+                  "{\"name\":\"qa_review\",\"strict\":true,\"schema\":{}}"
+                + "\n  }\n}\n} }}",
+        "options": {}
+      },
+      "id": "0c2b2c8d-6c2b-4a7a-9c1e-6f1b3a6a0009",
+      "name": "Run QA Review (OpenAI)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [720, 320]
+    },
+    {
+      "parameters": {
+        "mode": "append",
+        "propertyName": "results",
+        "options": {}
+      },
+      "id": "0c2b2c8d-6c2b-4a7a-9c1e-6f1b3a6a0010",
+      "name": "Collect Results (placeholder)",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [980, 220]
+    }
+  ],
+  "connections": {
+    "Trigger (Webhook)": {
+      "main": [[{ "node": "Normalize Input", "type": "main", "index": 0 }]]
+    },
+    "Normalize Input": {
+      "main": [[{ "node": "Generate Production Plan (OpenAI)", "type": "main", "index": 0 }]]
+    },
+    "Generate Production Plan (OpenAI)": {
+      "main": [[{ "node": "Extract Production Plan", "type": "main", "index": 0 }]]
+    },
+    "Extract Production Plan": {
+      "main": [[{ "node": "Split Jobs", "type": "main", "index": 0 }]]
+    },
+    "Split Jobs": {
+      "main": [
+        [
+          { "node": "If Creative Job", "type": "main", "index": 0 },
+          { "node": "If QA Job", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "If Creative Job": {
+      "main": [[{ "node": "Run Creative Production (OpenAI)", "type": "main", "index": 0 }], []]
+    },
+    "If QA Job": {
+      "main": [[{ "node": "Run QA Review (OpenAI)", "type": "main", "index": 0 }], []]
+    },
+    "Run Creative Production (OpenAI)": {
+      "main": [[{ "node": "Collect Results (placeholder)", "type": "main", "index": 0 }]]
+    },
+    "Run QA Review (OpenAI)": {
+      "main": [[{ "node": "Collect Results (placeholder)", "type": "main", "index": 1 }]]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "00000000-0000-0000-0000-000000000107",
+  "meta": {
+    "aos": {
+      "phase": 3,
+      "purpose": "Phase 3 Orchestration：content_plan → production jobs → generate content_assets (+ optional QA)",
+      "upstream": ["06_content_strategy"],
+      "downstream": ["08_publishing"],
+      "prompts": [
+        "agents/prompts/phase3_orchestrator_agent.md",
+        "agents/prompts/phase3_router_agent.md",
+        "agents/prompts/creative_production_agent.md",
+        "agents/prompts/qa_compliance_agent.md",
+        "agents/prompts/strict_json_repair_agent.md"
+      ],
+      "schemas_openai": [
+        "agents/schemas/openai/phase3_production_plan.json",
+        "agents/schemas/openai/content_asset.json",
+        "agents/schemas/openai/qa_review.json"
+      ],
+      "db_tables": ["content_assets", "approval_records", "workflow_tasks"],
+      "io_contract": {
+        "inputs": [
+          {
+            "name": "content_plan",
+            "schema": "agents/schemas/openai/content_plan.json",
+            "required": true
+          },
+          {
+            "name": "brand_context",
+            "schema": "freeform_object",
+            "required": true
+          },
+          {
+            "name": "brand_memory",
+            "schema": "freeform_object",
+            "required": false
+          }
+        ],
+        "outputs": [
+          {
+            "name": "phase3_production_plan",
+            "schema": "agents/schemas/openai/phase3_production_plan.json"
+          },
+          {
+            "name": "content_assets",
+            "schema": "agents/schemas/openai/content_asset.json[]"
+          },
+          {
+            "name": "qa_reviews",
+            "schema": "agents/schemas/openai/qa_review.json[]"
+          }
+        ]
+      },
+      "implementation_notes": [
+        "本工作流包含可导入的 nodes 骨架（Webhook → Orchestrator → Split Jobs → Creative/QA）。",
+        "OpenAI 的 prompts 与 json_schema 目前为占位：建议在 n8n 中用读取文件/变量注入 agents/prompts/*.md，并将 agents/schemas/openai/*.json 的 schema 注入到 response_format.json_schema。",
+        "若 OpenAI 输出不符合 schema，可在每个 OpenAI 节点后插入 strict_json_repair_agent 做二次修复。"
+      ]
+    }
+  }
+}
+

@@ -1,0 +1,63 @@
+services:
+  db:
+    image: pgvector/pgvector:pg15
+    container_name: aos-db
+    environment:
+      POSTGRES_USER: aos
+      POSTGRES_PASSWORD: aos
+      POSTGRES_DB: aos
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./database/migrations:/docker-entrypoint-initdb.d/01_migrations:ro
+      - ./database/seeds:/docker-entrypoint-initdb.d/02_seeds:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aos -d aos"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  minio:
+    image: minio/minio:latest
+    container_name: aos-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: aosminio
+      MINIO_ROOT_PASSWORD: aosminio123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: aos-n8n
+    ports:
+      - "5678:5678"
+    environment:
+      N8N_HOST: localhost
+      N8N_PORT: 5678
+      N8N_PROTOCOL: http
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_PERSONALIZATION_ENABLED: "false"
+      N8N_ENCRYPTION_KEY: "replace-me-in-prod"
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: db
+      DB_POSTGRESDB_PORT: 5432
+      DB_POSTGRESDB_DATABASE: aos
+      DB_POSTGRESDB_USER: aos
+      DB_POSTGRESDB_PASSWORD: aos
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n/workflows:/workflows:ro
+
+volumes:
+  db_data:
+  minio_data:
+  n8n_data:
+

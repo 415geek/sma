@@ -1,0 +1,456 @@
+{
+  "name": "strategic_framework",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "required": [
+      "strategy_id",
+      "executive_summary",
+      "positioning_strategy",
+      "messaging_framework",
+      "content_pillars",
+      "platform_strategy",
+      "priority_roadmap",
+      "risk_assessment",
+      "insights"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "strategy_id": {
+        "type": "string",
+        "description": "Unique identifier, format: STR-{project_id_short}-{timestamp}"
+      },
+      "executive_summary": {
+        "type": "object",
+        "required": [
+          "strategic_situation",
+          "key_opportunity",
+          "strategic_direction",
+          "critical_success_factors"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "strategic_situation": {
+            "type": "string",
+            "description": "2-3 sentence summary of current situation"
+          },
+          "key_opportunity": {
+            "type": "string",
+            "description": "The single biggest opportunity identified"
+          },
+          "strategic_direction": {
+            "type": "string",
+            "description": "High-level strategic recommendation"
+          },
+          "critical_success_factors": {
+            "type": "array",
+            "items": { "type": "string" },
+            "maxItems": 5
+          },
+          "evidence_codes": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "positioning_strategy": {
+        "type": "object",
+        "required": [
+          "current_positioning",
+          "target_positioning",
+          "positioning_statement",
+          "differentiation_pillars",
+          "category_entry_points"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "current_positioning": {
+            "type": "object",
+            "required": ["description", "strengths", "weaknesses"],
+            "additionalProperties": false,
+            "properties": {
+              "description": { "type": "string" },
+              "strengths": { "type": "array", "items": { "type": "string" } },
+              "weaknesses": { "type": "array", "items": { "type": "string" } },
+              "evidence_codes": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "target_positioning": {
+            "type": "object",
+            "required": ["description", "rationale", "gap_to_close"],
+            "additionalProperties": false,
+            "properties": {
+              "description": { "type": "string" },
+              "rationale": { "type": "string" },
+              "gap_to_close": { "type": "string" },
+              "timeline": { "type": "string" },
+              "evidence_codes": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "positioning_statement": {
+            "type": "object",
+            "required": ["for_whom", "brand_is", "that_provides", "unlike", "we_deliver"],
+            "additionalProperties": false,
+            "properties": {
+              "for_whom": { "type": "string" },
+              "brand_is": { "type": "string" },
+              "that_provides": { "type": "string" },
+              "unlike": { "type": "string" },
+              "we_deliver": { "type": "string" },
+              "full_statement": { "type": "string" }
+            }
+          },
+          "differentiation_pillars": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "required": ["pillar", "description", "proof_points", "evidence_codes"],
+              "additionalProperties": false,
+              "properties": {
+                "pillar": { "type": "string" },
+                "description": { "type": "string" },
+                "proof_points": { "type": "array", "items": { "type": "string" } },
+                "evidence_codes": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "category_entry_points": {
+            "type": "array",
+            "description": "Mental availability entry points",
+            "items": {
+              "type": "object",
+              "required": ["situation", "brand_association", "priority"],
+              "additionalProperties": false,
+              "properties": {
+                "situation": {
+                  "type": "string",
+                  "description": "When customer thinks/feels/needs..."
+                },
+                "brand_association": {
+                  "type": "string",
+                  "description": "...they think of [brand] because..."
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": ["primary", "secondary", "tertiary"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "messaging_framework": {
+        "type": "object",
+        "required": [
+          "primary_message",
+          "supporting_messages",
+          "proof_points",
+          "tone_guidelines",
+          "messaging_dos_donts"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "primary_message": {
+            "type": "object",
+            "required": ["message", "rationale"],
+            "additionalProperties": false,
+            "properties": {
+              "message": { "type": "string" },
+              "rationale": { "type": "string" },
+              "evidence_codes": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "supporting_messages": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "required": ["message", "use_when", "target_persona"],
+              "additionalProperties": false,
+              "properties": {
+                "message": { "type": "string" },
+                "use_when": { "type": "string" },
+                "target_persona": { "type": "string" },
+                "platform_fit": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "proof_points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["claim", "proof", "evidence_code"],
+              "additionalProperties": false,
+              "properties": {
+                "claim": { "type": "string" },
+                "proof": { "type": "string" },
+                "evidence_code": { "type": "string" }
+              }
+            }
+          },
+          "tone_guidelines": {
+            "type": "object",
+            "required": ["primary_tone", "secondary_tones", "tone_spectrum"],
+            "additionalProperties": false,
+            "properties": {
+              "primary_tone": { "type": "string" },
+              "secondary_tones": { "type": "array", "items": { "type": "string" } },
+              "tone_spectrum": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "formal_casual",
+                  "serious_playful",
+                  "traditional_modern",
+                  "reserved_expressive"
+                ],
+                "properties": {
+                  "formal_casual": {
+                    "type": "integer",
+                    "description": "1-10 scale, 1=formal, 10=casual"
+                  },
+                  "serious_playful": { "type": "integer" },
+                  "traditional_modern": { "type": "integer" },
+                  "reserved_expressive": { "type": "integer" }
+                }
+              },
+              "voice_examples": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "messaging_dos_donts": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["dos", "donts"],
+            "properties": {
+              "dos": { "type": "array", "items": { "type": "string" } },
+              "donts": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      },
+      "content_pillars": {
+        "type": "array",
+        "minItems": 4,
+        "maxItems": 6,
+        "items": {
+          "type": "object",
+          "required": [
+            "pillar_id",
+            "name",
+            "description",
+            "percentage",
+            "target_personas",
+            "content_types",
+            "themes",
+            "evidence_codes"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "pillar_id": { "type": "string" },
+            "name": { "type": "string" },
+            "description": { "type": "string" },
+            "percentage": {
+              "type": "integer",
+              "description": "Percentage of content mix (all pillars should sum to 100)"
+            },
+            "strategic_purpose": {
+              "type": "string",
+              "enum": ["awareness", "consideration", "conversion", "retention", "advocacy"]
+            },
+            "target_personas": { "type": "array", "items": { "type": "string" } },
+            "content_types": { "type": "array", "items": { "type": "string" } },
+            "themes": { "type": "array", "items": { "type": "string" } },
+            "sample_topics": { "type": "array", "items": { "type": "string" }, "maxItems": 5 },
+            "platforms": { "type": "array", "items": { "type": "string" } },
+            "evidence_codes": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      },
+      "platform_strategy": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "platform",
+            "role",
+            "priority",
+            "content_focus",
+            "posting_frequency",
+            "success_metrics"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "platform": { "type": "string" },
+            "role": {
+              "type": "string",
+              "description": "Strategic role of this platform, e.g., 'awareness engine', 'conversion driver', 'community hub'"
+            },
+            "priority": { "type": "string", "enum": ["primary", "secondary", "experimental"] },
+            "target_audience": { "type": "string" },
+            "content_focus": { "type": "array", "items": { "type": "string" } },
+            "content_formats": { "type": "array", "items": { "type": "string" } },
+            "posting_frequency": { "type": "string" },
+            "optimal_posting_times": { "type": "array", "items": { "type": "string" } },
+            "success_metrics": { "type": "array", "items": { "type": "string" } },
+            "platform_specific_tactics": { "type": "array", "items": { "type": "string" } },
+            "evidence_codes": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      },
+      "priority_roadmap": {
+        "type": "object",
+        "required": [
+          "immediate_actions",
+          "short_term_priorities",
+          "medium_term_initiatives",
+          "long_term_goals"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "immediate_actions": {
+            "type": "array",
+            "description": "0-30 days",
+            "items": {
+              "type": "object",
+              "required": ["action", "rationale", "owner_type", "success_criteria"],
+              "additionalProperties": false,
+              "properties": {
+                "action": { "type": "string" },
+                "rationale": { "type": "string" },
+                "owner_type": {
+                  "type": "string",
+                  "enum": ["content_team", "strategy_team", "client", "design_team", "social_team"]
+                },
+                "effort": { "type": "string", "enum": ["low", "medium", "high"] },
+                "impact": { "type": "string", "enum": ["low", "medium", "high"] },
+                "success_criteria": { "type": "string" },
+                "evidence_codes": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "short_term_priorities": {
+            "type": "array",
+            "description": "30-60 days",
+            "items": {
+              "type": "object",
+              "required": ["priority", "description", "expected_outcome"],
+              "additionalProperties": false,
+              "properties": {
+                "priority": { "type": "string" },
+                "description": { "type": "string" },
+                "expected_outcome": { "type": "string" },
+                "dependencies": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "medium_term_initiatives": {
+            "type": "array",
+            "description": "60-90 days",
+            "items": {
+              "type": "object",
+              "required": ["initiative", "description", "success_metrics"],
+              "additionalProperties": false,
+              "properties": {
+                "initiative": { "type": "string" },
+                "description": { "type": "string" },
+                "success_metrics": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "long_term_goals": {
+            "type": "array",
+            "description": "90+ days",
+            "items": {
+              "type": "object",
+              "required": ["goal", "timeline", "measurement"],
+              "additionalProperties": false,
+              "properties": {
+                "goal": { "type": "string" },
+                "timeline": { "type": "string" },
+                "measurement": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "risk_assessment": {
+        "type": "object",
+        "required": ["strategic_risks", "assumptions", "data_gaps", "mitigation_strategies"],
+        "additionalProperties": false,
+        "properties": {
+          "strategic_risks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["risk", "likelihood", "impact", "mitigation"],
+              "additionalProperties": false,
+              "properties": {
+                "risk": { "type": "string" },
+                "likelihood": { "type": "string", "enum": ["low", "medium", "high"] },
+                "impact": { "type": "string", "enum": ["low", "medium", "high"] },
+                "mitigation": { "type": "string" }
+              }
+            }
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["assumption", "if_wrong"],
+              "additionalProperties": false,
+              "properties": {
+                "assumption": { "type": "string" },
+                "if_wrong": { "type": "string" },
+                "validation_approach": { "type": ["string", "null"] }
+              }
+            }
+          },
+          "data_gaps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["gap", "impact_on_strategy", "how_to_fill"],
+              "additionalProperties": false,
+              "properties": {
+                "gap": { "type": "string" },
+                "impact_on_strategy": { "type": "string" },
+                "how_to_fill": { "type": "string" }
+              }
+            }
+          },
+          "mitigation_strategies": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "insights": {
+        "type": "array",
+        "description": "Formatted insights for the insights table (module: strategy)",
+        "items": {
+          "type": "object",
+          "required": [
+            "title",
+            "finding",
+            "evidence_codes",
+            "confidence",
+            "business_implication",
+            "recommended_action",
+            "priority"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "title": { "type": "string" },
+            "finding": { "type": "string" },
+            "evidence_codes": { "type": "array", "items": { "type": "string" } },
+            "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+            "gaps": { "type": "array", "items": { "type": "string" } },
+            "assumptions": { "type": "array", "items": { "type": "string" } },
+            "business_implication": { "type": "string" },
+            "recommended_action": { "type": "string" },
+            "priority": { "type": "string", "enum": ["high", "medium", "low"] }
+          }
+        }
+      }
+    }
+  }
+}
+
+

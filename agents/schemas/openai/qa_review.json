@@ -1,0 +1,278 @@
+{
+  "name": "qa_review",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "required": [
+      "review_id",
+      "asset_id",
+      "overall_status",
+      "checks",
+      "issues",
+      "recommendations",
+      "approval_decision"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "review_id": { "type": "string", "description": "Format: QA-{asset_id}-{timestamp}" },
+      "asset_id": { "type": "string" },
+      "overall_status": {
+        "type": "string",
+        "enum": ["approved", "approved_with_changes", "revision_required", "rejected"]
+      },
+      "checks": {
+        "type": "object",
+        "required": [
+          "factual_accuracy",
+          "brand_consistency",
+          "legal_compliance",
+          "platform_compliance",
+          "sensitivity",
+          "technical_quality"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "factual_accuracy": {
+            "type": "object",
+            "required": ["status", "issues_found"],
+            "additionalProperties": false,
+            "properties": {
+              "status": { "type": "string", "enum": ["pass", "warning", "fail"] },
+              "issues_found": { "type": "integer" },
+              "details": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["claim", "verification_status"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "claim": { "type": "string" },
+                    "verification_status": {
+                      "type": "string",
+                      "enum": ["verified", "unverified", "false", "needs_source"]
+                    },
+                    "evidence_code": { "type": ["string", "null"] },
+                    "note": { "type": ["string", "null"] }
+                  }
+                }
+              }
+            }
+          },
+          "brand_consistency": {
+            "type": "object",
+            "required": ["status", "issues_found"],
+            "additionalProperties": false,
+            "properties": {
+              "status": { "type": "string", "enum": ["pass", "warning", "fail"] },
+              "issues_found": { "type": "integer" },
+              "voice_alignment": {
+                "type": "string",
+                "enum": ["strong", "adequate", "weak", "misaligned"]
+              },
+              "forbidden_words_found": { "type": "array", "items": { "type": "string" } },
+              "messaging_alignment": {
+                "type": "string",
+                "enum": ["aligned", "partially_aligned", "misaligned"]
+              },
+              "notes": { "type": ["string", "null"] }
+            }
+          },
+          "legal_compliance": {
+            "type": "object",
+            "required": ["status", "risk_level"],
+            "additionalProperties": false,
+            "properties": {
+              "status": { "type": "string", "enum": ["pass", "warning", "fail"] },
+              "risk_level": { "type": "string", "enum": ["none", "low", "medium", "high", "critical"] },
+              "issues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["issue", "risk_type", "severity"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "issue": { "type": "string" },
+                    "risk_type": {
+                      "type": "string",
+                      "enum": [
+                        "false_claim",
+                        "missing_disclaimer",
+                        "trademark",
+                        "privacy",
+                        "comparative_claim",
+                        "health_claim",
+                        "financial_claim",
+                        "other"
+                      ]
+                    },
+                    "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+                    "recommendation": { "type": "string" }
+                  }
+                }
+              },
+              "disclaimers_required": { "type": "array", "items": { "type": "string" } },
+              "disclaimers_present": { "type": "boolean" }
+            }
+          },
+          "platform_compliance": {
+            "type": "object",
+            "required": ["status", "issues_found"],
+            "additionalProperties": false,
+            "properties": {
+              "status": { "type": "string", "enum": ["pass", "warning", "fail"] },
+              "issues_found": { "type": "integer" },
+              "character_count": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["actual", "limit", "within_limit"],
+                "properties": {
+                  "actual": { "type": "integer" },
+                  "limit": { "type": "integer" },
+                  "within_limit": { "type": "boolean" }
+                }
+              },
+              "hashtag_count": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["actual", "limit", "within_limit"],
+                "properties": {
+                  "actual": { "type": "integer" },
+                  "limit": { "type": "integer" },
+                  "within_limit": { "type": "boolean" }
+                }
+              },
+              "format_issues": { "type": "array", "items": { "type": "string" } },
+              "policy_violations": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "sensitivity": {
+            "type": "object",
+            "required": ["status", "flags"],
+            "additionalProperties": false,
+            "properties": {
+              "status": { "type": "string", "enum": ["pass", "warning", "fail"] },
+              "flags": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["flag_type", "description", "severity"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "flag_type": {
+                      "type": "string",
+                      "enum": [
+                        "cultural",
+                        "political",
+                        "religious",
+                        "timing",
+                        "inclusivity",
+                        "offensive",
+                        "controversial"
+                      ]
+                    },
+                    "description": { "type": "string" },
+                    "severity": { "type": "string", "enum": ["low", "medium", "high"] },
+                    "recommendation": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "technical_quality": {
+            "type": "object",
+            "required": ["status", "issues_found"],
+            "additionalProperties": false,
+            "properties": {
+              "status": { "type": "string", "enum": ["pass", "warning", "fail"] },
+              "issues_found": { "type": "integer" },
+              "spelling_errors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["error", "correction"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "error": { "type": "string" },
+                    "correction": { "type": "string" }
+                  }
+                }
+              },
+              "grammar_issues": { "type": "array", "items": { "type": "string" } },
+              "formatting_issues": { "type": "array", "items": { "type": "string" } },
+              "broken_elements": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      },
+      "issues": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["issue_id", "severity", "category", "description", "location", "fix_required"],
+          "additionalProperties": false,
+          "properties": {
+            "issue_id": { "type": "string" },
+            "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] },
+            "category": {
+              "type": "string",
+              "enum": ["factual", "brand", "legal", "platform", "sensitivity", "technical"]
+            },
+            "description": { "type": "string" },
+            "location": { "type": "string", "description": "Where in the content the issue appears" },
+            "current_text": { "type": ["string", "null"] },
+            "suggested_fix": { "type": ["string", "null"] },
+            "fix_required": { "type": "boolean" }
+          }
+        }
+      },
+      "recommendations": {
+        "type": "array",
+        "description": "Non-mandatory improvements",
+        "items": {
+          "type": "object",
+          "required": ["recommendation", "priority", "impact"],
+          "additionalProperties": false,
+          "properties": {
+            "recommendation": { "type": "string" },
+            "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+            "impact": { "type": "string" },
+            "effort": { "type": "string", "enum": ["low", "medium", "high"] }
+          }
+        }
+      },
+      "approval_decision": {
+        "type": "object",
+        "required": ["decision", "conditions", "reviewer_notes"],
+        "additionalProperties": false,
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": ["approved", "approved_with_changes", "revision_required", "rejected"]
+          },
+          "conditions": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Conditions for approval (if approved_with_changes)"
+          },
+          "blocking_issues": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Issues that must be resolved"
+          },
+          "reviewer_notes": { "type": "string" }
+        }
+      },
+      "corrected_content": {
+        "type": ["object", "null"],
+        "description": "Auto-corrected version if applicable",
+        "additionalProperties": false,
+        "properties": {
+          "caption": { "type": ["string", "null"] },
+          "cover_title": { "type": ["string", "null"] },
+          "changes_made": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}
+

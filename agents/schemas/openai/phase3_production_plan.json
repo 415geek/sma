@@ -1,0 +1,67 @@
+{
+  "name": "phase3_production_plan",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "required": ["run_id", "plan_id", "jobs", "routing_summary"],
+    "additionalProperties": false,
+    "properties": {
+      "run_id": {
+        "type": "string",
+        "description": "Unique run identifier for Phase 3 production"
+      },
+      "strategy_id": {
+        "type": ["string", "null"],
+        "description": "Optional upstream strategy identifier (e.g., CPL-YYYYMM-vX or external strategy id)"
+      },
+      "plan_id": {
+        "type": "string",
+        "description": "Upstream content_plan.plan_id"
+      },
+      "jobs": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "required": ["job_id", "source_brief_id", "platform", "target_agent", "input_payload", "output_schema"],
+          "additionalProperties": false,
+          "properties": {
+            "job_id": { "type": "string" },
+            "source_brief_id": {
+              "type": "string",
+              "description": "content_plan.content_briefs[].brief_id"
+            },
+            "platform": { "type": "string" },
+            "target_agent": {
+              "type": "string",
+              "description": "Which agent/prompt should execute this job (e.g., creative_production_agent, qa_compliance_agent)"
+            },
+            "input_payload": {
+              "type": "object",
+              "description": "Structured input JSON for the target agent"
+            },
+            "output_schema": {
+              "type": "string",
+              "description": "Expected structured output schema name (e.g., content_asset, qa_review)"
+            },
+            "priority": {
+              "type": "string",
+              "enum": ["hero", "standard", "filler"]
+            },
+            "notes": { "type": ["string", "null"] }
+          }
+        }
+      },
+      "routing_summary": {
+        "type": "object",
+        "required": ["counts_by_target_agent", "counts_by_platform"],
+        "additionalProperties": false,
+        "properties": {
+          "counts_by_target_agent": { "type": "object" },
+          "counts_by_platform": { "type": "object" }
+        }
+      }
+    }
+  }
+}
+

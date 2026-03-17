@@ -1,0 +1,20 @@
+{
+  "name": "07_asset_generation",
+  "nodes": [],
+  "connections": {},
+  "active": false,
+  "settings": {},
+  "versionId": "00000000-0000-0000-0000-000000000007",
+  "meta": {
+    "aos": {
+      "phase": 2,
+      "purpose": "Creative Production：content briefs → content_assets（caption/script/shotlist/prompts）",
+      "upstream": ["06_content_strategy"],
+      "downstream": ["08_publishing"],
+      "prompts": ["agents/prompts/creative_production_agent.md", "agents/prompts/qa_compliance_agent.md"],
+      "schemas_openai": ["agents/schemas/openai/content_asset.json", "agents/schemas/openai/qa_review.json"],
+      "db_tables": ["content_assets", "approval_records", "workflow_tasks"]
+    }
+  }
+}
+

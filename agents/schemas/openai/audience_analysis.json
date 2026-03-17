@@ -1,0 +1,420 @@
+{
+  "name": "audience_analysis",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "required": [
+      "analysis_id",
+      "sentiment_overview",
+      "customer_personas",
+      "pain_points",
+      "decision_drivers",
+      "content_opportunities",
+      "insights"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "analysis_id": {
+        "type": "string",
+        "description": "Unique identifier, format: AUD-{project_id_short}-{timestamp}"
+      },
+      "sentiment_overview": {
+        "type": "object",
+        "required": [
+          "overall_sentiment",
+          "sentiment_distribution",
+          "sentiment_by_topic",
+          "notable_patterns"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "overall_sentiment": {
+            "type": "object",
+            "required": ["score", "label", "sample_size"],
+            "additionalProperties": false,
+            "properties": {
+              "score": { "type": "number", "description": "Average sentiment score 1-5" },
+              "label": {
+                "type": "string",
+                "enum": [
+                  "very_negative",
+                  "negative",
+                  "mixed",
+                  "positive",
+                  "very_positive"
+                ]
+              },
+              "sample_size": { "type": "integer" },
+              "confidence": { "type": "string", "enum": ["high", "medium", "low"] }
+            }
+          },
+          "sentiment_distribution": {
+            "type": "object",
+            "required": ["positive_pct", "neutral_pct", "negative_pct"],
+            "additionalProperties": false,
+            "properties": {
+              "positive_pct": { "type": "number" },
+              "neutral_pct": { "type": "number" },
+              "negative_pct": { "type": "number" }
+            }
+          },
+          "sentiment_by_topic": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["topic", "sentiment", "mention_count"],
+              "additionalProperties": false,
+              "properties": {
+                "topic": { "type": "string" },
+                "sentiment": {
+                  "type": "string",
+                  "enum": [
+                    "very_negative",
+                    "negative",
+                    "mixed",
+                    "positive",
+                    "very_positive"
+                  ]
+                },
+                "mention_count": { "type": "integer" },
+                "sample_quotes": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "maxItems": 3
+                }
+              }
+            }
+          },
+          "notable_patterns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["pattern", "frequency", "implication"],
+              "additionalProperties": false,
+              "properties": {
+                "pattern": { "type": "string" },
+                "frequency": {
+                  "type": "string",
+                  "enum": ["rare", "occasional", "common", "very_common"]
+                },
+                "implication": { "type": "string" },
+                "example_quotes": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          }
+        }
+      },
+      "customer_personas": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 4,
+        "description": "Evidence-based customer personas (2-4 recommended)",
+        "items": {
+          "type": "object",
+          "required": [
+            "persona_id",
+            "name",
+            "description",
+            "evidence_basis",
+            "characteristics",
+            "needs",
+            "behaviors"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "persona_id": { "type": "string" },
+            "name": { "type": "string", "description": "Descriptive persona name, e.g., 'The Busy Professional'" },
+            "description": { "type": "string", "description": "2-3 sentence persona summary" },
+            "evidence_basis": {
+              "type": "object",
+              "required": ["source_count", "confidence"],
+              "additionalProperties": false,
+              "properties": {
+                "source_count": { "type": "integer" },
+                "sample_quotes": { "type": "array", "items": { "type": "string" } },
+                "confidence": { "type": "string", "enum": ["high", "medium", "low"] }
+              }
+            },
+            "characteristics": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "demographic_signals",
+                "psychographic_signals",
+                "behavioral_signals"
+              ],
+              "properties": {
+                "demographic_signals": {
+                  "type": "array",
+                  "description": "Only include demographics with evidence",
+                  "items": {
+                    "type": "object",
+                    "required": ["attribute", "evidence"],
+                    "additionalProperties": false,
+                    "properties": {
+                      "attribute": { "type": "string" },
+                      "evidence": { "type": "string" }
+                    }
+                  }
+                },
+                "psychographic_signals": {
+                  "type": "array",
+                  "description": "Values, attitudes, interests inferred from content",
+                  "items": { "type": "string" }
+                },
+                "behavioral_signals": {
+                  "type": "array",
+                  "description": "Observed behaviors mentioned in reviews",
+                  "items": { "type": "string" }
+                }
+              }
+            },
+            "needs": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["functional", "emotional", "social"],
+              "properties": {
+                "functional": { "type": "array", "items": { "type": "string" } },
+                "emotional": { "type": "array", "items": { "type": "string" } },
+                "social": { "type": "array", "items": { "type": "string" } }
+              }
+            },
+            "behaviors": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["purchase_triggers", "information_seeking", "decision_criteria"],
+              "properties": {
+                "purchase_triggers": { "type": "array", "items": { "type": "string" } },
+                "information_seeking": { "type": "array", "items": { "type": "string" } },
+                "decision_criteria": { "type": "array", "items": { "type": "string" } }
+              }
+            },
+            "content_preferences": {
+              "type": "array",
+              "description": "Content types/themes that would resonate",
+              "items": { "type": "string" }
+            },
+            "messaging_recommendations": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      },
+      "pain_points": {
+        "type": "object",
+        "required": ["primary_pain_points", "secondary_pain_points", "industry_pain_points"],
+        "additionalProperties": false,
+        "properties": {
+          "primary_pain_points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "pain_point",
+                "severity",
+                "frequency",
+                "quotes",
+                "content_opportunity"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "pain_point": { "type": "string" },
+                "description": { "type": "string" },
+                "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+                "frequency": { "type": "string", "enum": ["rare", "occasional", "common", "very_common"] },
+                "quotes": { "type": "array", "items": { "type": "string" }, "maxItems": 3 },
+                "root_cause": { "type": ["string", "null"] },
+                "content_opportunity": {
+                  "type": "string",
+                  "description": "How content could address this pain point"
+                }
+              }
+            }
+          },
+          "secondary_pain_points": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["pain_point", "frequency"],
+              "additionalProperties": false,
+              "properties": {
+                "pain_point": { "type": "string" },
+                "frequency": { "type": "string" },
+                "notes": { "type": ["string", "null"] }
+              }
+            }
+          },
+          "industry_pain_points": {
+            "type": "array",
+            "description": "Pain points about the industry in general (from competitor reviews)",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "decision_drivers": {
+        "type": "object",
+        "required": ["purchase_triggers", "consideration_factors", "barriers", "trust_builders"],
+        "additionalProperties": false,
+        "properties": {
+          "purchase_triggers": {
+            "type": "array",
+            "description": "What makes customers take action",
+            "items": {
+              "type": "object",
+              "required": ["trigger", "description", "frequency"],
+              "additionalProperties": false,
+              "properties": {
+                "trigger": { "type": "string" },
+                "description": { "type": "string" },
+                "frequency": { "type": "string", "enum": ["rare", "occasional", "common", "very_common"] },
+                "example_quotes": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "consideration_factors": {
+            "type": "array",
+            "description": "What customers compare/evaluate",
+            "items": {
+              "type": "object",
+              "required": ["factor", "importance", "how_evaluated"],
+              "additionalProperties": false,
+              "properties": {
+                "factor": { "type": "string" },
+                "importance": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+                "how_evaluated": { "type": "string" }
+              }
+            }
+          },
+          "barriers": {
+            "type": "array",
+            "description": "What prevents customers from choosing",
+            "items": {
+              "type": "object",
+              "required": ["barrier", "impact", "how_to_overcome"],
+              "additionalProperties": false,
+              "properties": {
+                "barrier": { "type": "string" },
+                "impact": { "type": "string", "enum": ["low", "medium", "high"] },
+                "how_to_overcome": { "type": "string" },
+                "content_solution": { "type": ["string", "null"] }
+              }
+            }
+          },
+          "trust_builders": {
+            "type": "array",
+            "description": "What builds customer confidence",
+            "items": {
+              "type": "object",
+              "required": ["trust_signal", "effectiveness"],
+              "additionalProperties": false,
+              "properties": {
+                "trust_signal": { "type": "string" },
+                "effectiveness": { "type": "string", "enum": ["low", "medium", "high"] },
+                "evidence": { "type": ["string", "null"] }
+              }
+            }
+          }
+        }
+      },
+      "content_opportunities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["opportunity", "rationale", "target_persona", "content_type", "priority"],
+          "additionalProperties": false,
+          "properties": {
+            "opportunity": { "type": "string" },
+            "rationale": { "type": "string" },
+            "target_persona": { "type": "string" },
+            "addresses_pain_point": { "type": ["string", "null"] },
+            "content_type": {
+              "type": "string",
+              "enum": [
+                "educational",
+                "emotional",
+                "social_proof",
+                "comparison",
+                "behind_scenes",
+                "ugc",
+                "faq",
+                "how_to"
+              ]
+            },
+            "suggested_formats": { "type": "array", "items": { "type": "string" } },
+            "key_messages": { "type": "array", "items": { "type": "string" } },
+            "priority": { "type": "string", "enum": ["high", "medium", "low"] }
+          }
+        }
+      },
+      "voice_of_customer": {
+        "type": "object",
+        "description": "Actual language and terms used by customers",
+        "required": ["language_patterns", "emotional_vocabulary", "frequently_used_terms"],
+        "additionalProperties": false,
+        "properties": {
+          "language_patterns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["pattern", "examples"],
+              "additionalProperties": false,
+              "properties": {
+                "pattern": { "type": "string" },
+                "examples": { "type": "array", "items": { "type": "string" } },
+                "usage_recommendation": { "type": ["string", "null"] }
+              }
+            }
+          },
+          "emotional_vocabulary": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["positive_emotions", "negative_emotions"],
+            "properties": {
+              "positive_emotions": { "type": "array", "items": { "type": "string" } },
+              "negative_emotions": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "frequently_used_terms": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["term", "context"],
+              "additionalProperties": false,
+              "properties": {
+                "term": { "type": "string" },
+                "context": { "type": "string" },
+                "frequency": { "type": "string", "enum": ["rare", "occasional", "common", "very_common"] }
+              }
+            }
+          }
+        }
+      },
+      "insights": {
+        "type": "array",
+        "description": "Formatted insights for the insights table (module: audience_analysis)",
+        "items": {
+          "type": "object",
+          "required": [
+            "title",
+            "finding",
+            "evidence_codes",
+            "confidence",
+            "business_implication",
+            "recommended_action"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "title": { "type": "string" },
+            "finding": { "type": "string" },
+            "evidence_codes": { "type": "array", "items": { "type": "string" } },
+            "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+            "gaps": { "type": "array", "items": { "type": "string" } },
+            "assumptions": { "type": "array", "items": { "type": "string" } },
+            "business_implication": { "type": "string" },
+            "recommended_action": { "type": "string" },
+            "priority": { "type": "string", "enum": ["high", "medium", "low"] }
+          }
+        }
+      }
+    }
+  }
+}
+

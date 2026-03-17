@@ -1,0 +1,30 @@
+{
+  "name": "04_strategic_analysis",
+  "nodes": [],
+  "connections": {},
+  "active": false,
+  "settings": {},
+  "versionId": "00000000-0000-0000-0000-000000000004",
+  "meta": {
+    "aos": {
+      "phase": 2,
+      "purpose": "Competitive/Audience/Localized/Strategy 分析链路：evidence → insights + framework",
+      "upstream": ["03_normalization"],
+      "downstream": ["05_report_assembly"],
+      "prompts": [
+        "agents/prompts/competitive_agent.md",
+        "agents/prompts/audience_agent.md",
+        "agents/prompts/localized_insight_agent.md",
+        "agents/prompts/strategy_agent.md"
+      ],
+      "schemas_openai": [
+        "agents/schemas/openai/competitive_analysis.json",
+        "agents/schemas/openai/audience_analysis.json",
+        "agents/schemas/openai/localized_insights.json",
+        "agents/schemas/openai/strategic_framework.json"
+      ],
+      "db_tables": ["competitors", "insights", "workflow_tasks"]
+    }
+  }
+}
+

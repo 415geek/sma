@@ -1,0 +1,215 @@
+{
+  "name": "content_plan",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "required": [
+      "plan_id",
+      "month_overview",
+      "platform_breakdown",
+      "weekly_plans",
+      "content_briefs"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "plan_id": { "type": "string", "description": "Format: CPL-{YYYYMM}-{version}" },
+      "month_overview": {
+        "type": "object",
+        "required": ["month_theme", "objectives", "key_dates", "content_mix", "kpis"],
+        "additionalProperties": false,
+        "properties": {
+          "month_theme": { "type": "string" },
+          "month_narrative": { "type": "string", "description": "Story arc for the month" },
+          "objectives": { "type": "array", "items": { "type": "string" }, "maxItems": 4 },
+          "key_dates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["date", "event", "content_angle"],
+              "additionalProperties": false,
+              "properties": {
+                "date": { "type": "string" },
+                "event": { "type": "string" },
+                "content_angle": { "type": "string" },
+                "platforms": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "content_mix": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["pillar", "percentage", "post_count"],
+              "additionalProperties": false,
+              "properties": {
+                "pillar": { "type": "string" },
+                "percentage": { "type": "integer" },
+                "post_count": { "type": "integer" }
+              }
+            }
+          },
+          "kpis": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["total_posts", "target_impressions", "target_engagement_rate"],
+            "properties": {
+              "total_posts": { "type": "integer" },
+              "target_impressions": { "type": "integer" },
+              "target_engagement_rate": { "type": "number" },
+              "target_reach": { "type": ["integer", "null"] },
+              "target_leads": { "type": ["integer", "null"] }
+            }
+          }
+        }
+      },
+      "platform_breakdown": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["platform", "role", "weekly_frequency", "content_types", "best_posting_times"],
+          "additionalProperties": false,
+          "properties": {
+            "platform": { "type": "string" },
+            "role": { "type": "string" },
+            "weekly_frequency": { "type": "integer" },
+            "monthly_posts": { "type": "integer" },
+            "content_types": { "type": "array", "items": { "type": "string" } },
+            "pillar_distribution": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["pillar", "posts"],
+                "additionalProperties": false,
+                "properties": {
+                  "pillar": { "type": "string" },
+                  "posts": { "type": "integer" }
+                }
+              }
+            },
+            "best_posting_times": { "type": "array", "items": { "type": "string" } },
+            "platform_specific_notes": { "type": ["string", "null"] }
+          }
+        }
+      },
+      "weekly_plans": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "week_number",
+            "week_start",
+            "week_end",
+            "theme",
+            "objectives",
+            "content_schedule"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "week_number": { "type": "integer" },
+            "week_start": { "type": "string" },
+            "week_end": { "type": "string" },
+            "theme": { "type": "string" },
+            "objectives": { "type": "array", "items": { "type": "string" } },
+            "content_schedule": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["day", "date", "posts"],
+                "additionalProperties": false,
+                "properties": {
+                  "day": { "type": "string" },
+                  "date": { "type": "string" },
+                  "posts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["brief_id", "platform", "content_type", "pillar", "time"],
+                      "additionalProperties": false,
+                      "properties": {
+                        "brief_id": { "type": "string" },
+                        "platform": { "type": "string" },
+                        "content_type": { "type": "string" },
+                        "pillar": { "type": "string" },
+                        "time": { "type": "string" },
+                        "hook_preview": { "type": ["string", "null"] }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "week_notes": { "type": ["string", "null"] }
+          }
+        }
+      },
+      "content_briefs": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "brief_id",
+            "platform",
+            "content_type",
+            "pillar",
+            "scheduled_date",
+            "scheduled_time",
+            "hook",
+            "key_message",
+            "cta",
+            "goal"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "brief_id": { "type": "string", "description": "Format: CB-{week}-{platform_code}-{sequence}" },
+            "platform": { "type": "string" },
+            "content_type": {
+              "type": "string",
+              "enum": [
+                "reel",
+                "carousel",
+                "single_image",
+                "story",
+                "video",
+                "text_post",
+                "live",
+                "article"
+              ]
+            },
+            "content_format": {
+              "type": "string",
+              "enum": ["vertical_video", "square", "horizontal", "story_format"]
+            },
+            "pillar": { "type": "string" },
+            "scheduled_date": { "type": "string" },
+            "scheduled_time": { "type": "string" },
+            "target_persona": { "type": ["string", "null"] },
+            "goal": {
+              "type": "string",
+              "enum": ["awareness", "engagement", "traffic", "conversion", "community"]
+            },
+            "hook": { "type": "string", "description": "First line/visual hook" },
+            "key_message": { "type": "string" },
+            "supporting_points": { "type": "array", "items": { "type": "string" }, "maxItems": 3 },
+            "cta": { "type": "string" },
+            "tone": { "type": "string" },
+            "visual_direction": { "type": ["string", "null"] },
+            "required_assets": { "type": "array", "items": { "type": "string" } },
+            "reference_links": { "type": "array", "items": { "type": "string" } },
+            "hashtag_strategy": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["primary", "secondary"],
+              "properties": {
+                "primary": { "type": "array", "items": { "type": "string" } },
+                "secondary": { "type": "array", "items": { "type": "string" } }
+              }
+            },
+            "mentions": { "type": "array", "items": { "type": "string" } },
+            "production_notes": { "type": ["string", "null"] }
+          }
+        }
+      }
+    }
+  }
+}
+

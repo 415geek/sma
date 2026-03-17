@@ -1,0 +1,329 @@
+{
+  "name": "localized_insights",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "required": [
+      "analysis_id",
+      "location_profile",
+      "community_characteristics",
+      "seasonal_opportunities",
+      "content_angles",
+      "local_language",
+      "partnership_opportunities",
+      "insights"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "analysis_id": { "type": "string", "description": "Format: LOC-{project_id_short}-{timestamp}" },
+      "location_profile": {
+        "type": "object",
+        "required": ["neighborhood_summary", "geographic_context", "accessibility"],
+        "additionalProperties": false,
+        "properties": {
+          "neighborhood_summary": {
+            "type": "string",
+            "description": "2-3 sentence neighborhood character description"
+          },
+          "neighborhood_name": { "type": "string" },
+          "neighborhood_type": {
+            "type": "string",
+            "enum": ["urban_dense", "urban_residential", "suburban", "small_town", "rural", "mixed_use"]
+          },
+          "geographic_context": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["landmarks", "notable_areas", "natural_features"],
+            "properties": {
+              "landmarks": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name", "relevance"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": { "type": "string" },
+                    "type": { "type": "string" },
+                    "relevance": { "type": "string" },
+                    "content_angle": { "type": ["string", "null"] }
+                  }
+                }
+              },
+              "notable_areas": { "type": "array", "items": { "type": "string" } },
+              "natural_features": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "accessibility": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["walkability", "transit", "parking"],
+            "properties": {
+              "walkability": {
+                "type": "string",
+                "enum": ["very_walkable", "somewhat_walkable", "car_dependent"]
+              },
+              "transit": { "type": "string" },
+              "parking": { "type": "string" },
+              "content_implications": { "type": ["string", "null"] }
+            }
+          }
+        }
+      },
+      "community_characteristics": {
+        "type": "object",
+        "required": ["demographic_profile", "psychographic_profile", "lifestyle_patterns", "cultural_elements"],
+        "additionalProperties": false,
+        "properties": {
+          "demographic_profile": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["primary_age_groups", "household_types", "income_level", "diversity_index"],
+            "properties": {
+              "primary_age_groups": { "type": "array", "items": { "type": "string" } },
+              "household_types": { "type": "array", "items": { "type": "string" } },
+              "income_level": {
+                "type": "string",
+                "enum": ["low", "lower_middle", "middle", "upper_middle", "affluent", "mixed"]
+              },
+              "diversity_index": {
+                "type": "string",
+                "enum": ["homogeneous", "somewhat_diverse", "diverse", "very_diverse"]
+              },
+              "education_level": { "type": ["string", "null"] }
+            }
+          },
+          "psychographic_profile": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["primary_values", "lifestyle_priorities", "spending_patterns"],
+            "properties": {
+              "primary_values": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Top 5 community values"
+              },
+              "lifestyle_priorities": { "type": "array", "items": { "type": "string" } },
+              "spending_patterns": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "lifestyle_patterns": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["daily_rhythms", "weekend_activities", "social_behaviors"],
+            "properties": {
+              "daily_rhythms": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["time_period", "typical_activity"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "time_period": { "type": "string" },
+                    "typical_activity": { "type": "string" },
+                    "content_opportunity": { "type": ["string", "null"] }
+                  }
+                }
+              },
+              "weekend_activities": { "type": "array", "items": { "type": "string" } },
+              "social_behaviors": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "cultural_elements": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["dominant_cultures", "food_culture", "community_traditions"],
+            "properties": {
+              "dominant_cultures": { "type": "array", "items": { "type": "string" } },
+              "food_culture": { "type": "array", "items": { "type": "string" } },
+              "community_traditions": { "type": "array", "items": { "type": "string" } },
+              "local_pride_points": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      },
+      "seasonal_opportunities": {
+        "type": "object",
+        "required": ["weather_patterns", "seasonal_events", "business_seasonality", "content_calendar_hooks"],
+        "additionalProperties": false,
+        "properties": {
+          "weather_patterns": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["current_season", "typical_conditions", "content_implications"],
+            "properties": {
+              "current_season": { "type": "string" },
+              "typical_conditions": { "type": "string" },
+              "weather_related_activities": { "type": "array", "items": { "type": "string" } },
+              "content_implications": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "seasonal_events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["event", "date_range", "relevance", "content_angle"],
+              "additionalProperties": false,
+              "properties": {
+                "event": { "type": "string" },
+                "date_range": { "type": "string" },
+                "type": {
+                  "type": "string",
+                  "enum": ["holiday", "local_festival", "community_event", "school_event", "sports", "seasonal"]
+                },
+                "relevance": { "type": "string", "enum": ["high", "medium", "low"] },
+                "content_angle": { "type": "string" },
+                "recommended_platforms": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "business_seasonality": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["peak_periods", "slow_periods", "content_strategy"],
+            "properties": {
+              "peak_periods": { "type": "array", "items": { "type": "string" } },
+              "slow_periods": { "type": "array", "items": { "type": "string" } },
+              "content_strategy": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["peak_approach", "slow_approach"],
+                "properties": {
+                  "peak_approach": { "type": "string" },
+                  "slow_approach": { "type": "string" }
+                }
+              }
+            }
+          },
+          "content_calendar_hooks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["date", "hook", "content_type"],
+              "additionalProperties": false,
+              "properties": {
+                "date": { "type": "string" },
+                "hook": { "type": "string" },
+                "content_type": { "type": "string" },
+                "platform": { "type": "string" },
+                "priority": { "type": "string", "enum": ["high", "medium", "low"] }
+              }
+            }
+          }
+        }
+      },
+      "content_angles": {
+        "type": "array",
+        "description": "Neighborhood-specific content angles",
+        "items": {
+          "type": "object",
+          "required": ["angle_id", "angle", "description", "target_audience", "platforms", "priority"],
+          "additionalProperties": false,
+          "properties": {
+            "angle_id": { "type": "string" },
+            "angle": { "type": "string" },
+            "description": { "type": "string" },
+            "why_it_works": { "type": "string" },
+            "target_audience": { "type": "string" },
+            "platforms": { "type": "array", "items": { "type": "string" } },
+            "content_examples": { "type": "array", "items": { "type": "string" } },
+            "priority": { "type": "string", "enum": ["high", "medium", "low"] }
+          }
+        }
+      },
+      "local_language": {
+        "type": "object",
+        "required": ["local_terms", "neighborhood_references", "cultural_phrases", "avoid_terms"],
+        "additionalProperties": false,
+        "properties": {
+          "local_terms": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["term", "meaning", "usage"],
+              "additionalProperties": false,
+              "properties": {
+                "term": { "type": "string" },
+                "meaning": { "type": "string" },
+                "usage": { "type": "string" }
+              }
+            }
+          },
+          "neighborhood_references": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Local places, streets, landmarks to reference"
+          },
+          "cultural_phrases": { "type": "array", "items": { "type": "string" } },
+          "avoid_terms": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["term", "reason"],
+              "additionalProperties": false,
+              "properties": {
+                "term": { "type": "string" },
+                "reason": { "type": "string" }
+              }
+            }
+          },
+          "hashtags": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["local", "neighborhood", "community"],
+            "properties": {
+              "local": { "type": "array", "items": { "type": "string" } },
+              "neighborhood": { "type": "array", "items": { "type": "string" } },
+              "community": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      },
+      "partnership_opportunities": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["partner_type", "examples", "content_opportunity"],
+          "additionalProperties": false,
+          "properties": {
+            "partner_type": {
+              "type": "string",
+              "enum": ["local_business", "community_org", "influencer", "media", "event", "school", "nonprofit"]
+            },
+            "examples": { "type": "array", "items": { "type": "string" } },
+            "content_opportunity": { "type": "string" },
+            "approach_recommendation": { "type": ["string", "null"] }
+          }
+        }
+      },
+      "insights": {
+        "type": "array",
+        "description": "Formatted insights for the insights table (module: localized_analysis)",
+        "items": {
+          "type": "object",
+          "required": [
+            "title",
+            "finding",
+            "evidence_codes",
+            "confidence",
+            "business_implication",
+            "recommended_action",
+            "priority"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "title": { "type": "string" },
+            "finding": { "type": "string" },
+            "evidence_codes": { "type": "array", "items": { "type": "string" } },
+            "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+            "gaps": { "type": "array", "items": { "type": "string" } },
+            "assumptions": { "type": "array", "items": { "type": "string" } },
+            "business_implication": { "type": "string" },
+            "recommended_action": { "type": "string" },
+            "priority": { "type": "string", "enum": ["high", "medium", "low"] }
+          }
+        }
+      }
+    }
+  }
+}
+

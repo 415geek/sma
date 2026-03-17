@@ -1,0 +1,502 @@
+{
+  "name": "competitive_analysis",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "required": [
+      "analysis_id",
+      "competitive_landscape",
+      "positioning_analysis",
+      "content_strategy_analysis",
+      "messaging_analysis",
+      "gap_analysis",
+      "strategic_recommendations",
+      "insights"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "analysis_id": {
+        "type": "string",
+        "description": "Unique identifier, format: COMP-{project_id_short}-{timestamp}"
+      },
+      "competitive_landscape": {
+        "type": "object",
+        "required": ["market_overview", "competitor_tiers", "competitive_intensity"],
+        "additionalProperties": false,
+        "properties": {
+          "market_overview": {
+            "type": "string",
+            "description": "2-3 sentence summary of competitive landscape"
+          },
+          "competitor_tiers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["tier", "description", "competitors"],
+              "additionalProperties": false,
+              "properties": {
+                "tier": {
+                  "type": "string",
+                  "enum": [
+                    "primary_threat",
+                    "secondary_competitor",
+                    "aspirational_benchmark",
+                    "emerging_player"
+                  ]
+                },
+                "description": { "type": "string" },
+                "competitors": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "competitive_intensity": {
+            "type": "string",
+            "enum": ["low", "moderate", "high", "intense"],
+            "description": "Overall competitive pressure in the market"
+          },
+          "evidence_codes": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "positioning_analysis": {
+        "type": "object",
+        "required": ["positioning_map", "price_quality_matrix", "positioning_gaps"],
+        "additionalProperties": false,
+        "properties": {
+          "positioning_map": {
+            "type": "array",
+            "description": "Brands plotted on price vs quality/experience axes",
+            "items": {
+              "type": "object",
+              "required": ["brand", "x_axis_value", "y_axis_value", "quadrant"],
+              "additionalProperties": false,
+              "properties": {
+                "brand": { "type": "string" },
+                "is_client": { "type": "boolean" },
+                "x_axis_value": {
+                  "type": "number",
+                  "description": "Position on price axis (1-10, 1=budget, 10=luxury)"
+                },
+                "y_axis_value": {
+                  "type": "number",
+                  "description": "Position on quality/service axis (1-10)"
+                },
+                "quadrant": {
+                  "type": "string",
+                  "enum": [
+                    "premium_leader",
+                    "value_player",
+                    "luxury_niche",
+                    "budget_competitor"
+                  ]
+                },
+                "positioning_statement": { "type": "string" }
+              }
+            }
+          },
+          "price_quality_matrix": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["brand", "price_tier", "perceived_quality", "value_perception"],
+              "additionalProperties": false,
+              "properties": {
+                "brand": { "type": "string" },
+                "price_tier": {
+                  "type": "string",
+                  "enum": ["budget", "mid", "premium", "luxury"]
+                },
+                "perceived_quality": {
+                  "type": "string",
+                  "enum": ["low", "medium", "high", "exceptional"]
+                },
+                "value_perception": {
+                  "type": "string",
+                  "enum": [
+                    "poor_value",
+                    "fair_value",
+                    "good_value",
+                    "exceptional_value"
+                  ]
+                },
+                "evidence_codes": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "positioning_gaps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["gap_description", "opportunity_size", "fit_for_client"],
+              "additionalProperties": false,
+              "properties": {
+                "gap_description": { "type": "string" },
+                "quadrant": { "type": "string" },
+                "opportunity_size": { "type": "string", "enum": ["small", "medium", "large"] },
+                "fit_for_client": {
+                  "type": "string",
+                  "enum": ["poor", "moderate", "good", "excellent"]
+                },
+                "rationale": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "content_strategy_analysis": {
+        "type": "object",
+        "required": [
+          "platform_presence",
+          "content_pillars_comparison",
+          "format_analysis",
+          "engagement_patterns",
+          "content_gaps"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "platform_presence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["platform", "competitor_activity"],
+              "additionalProperties": false,
+              "properties": {
+                "platform": { "type": "string" },
+                "competitor_activity": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["brand", "presence_level", "posting_frequency"],
+                    "additionalProperties": false,
+                    "properties": {
+                      "brand": { "type": "string" },
+                      "presence_level": {
+                        "type": "string",
+                        "enum": ["none", "minimal", "moderate", "active", "very_active"]
+                      },
+                      "posting_frequency": { "type": ["string", "null"] },
+                      "follower_count": { "type": ["integer", "null"] },
+                      "engagement_rate": { "type": ["string", "null"] }
+                    }
+                  }
+                },
+                "platform_opportunity": {
+                  "type": "string",
+                  "description": "Opportunity assessment for client on this platform"
+                }
+              }
+            }
+          },
+          "content_pillars_comparison": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["pillar_theme", "competitors_using", "saturation_level"],
+              "additionalProperties": false,
+              "properties": {
+                "pillar_theme": { "type": "string" },
+                "competitors_using": { "type": "array", "items": { "type": "string" } },
+                "saturation_level": {
+                  "type": "string",
+                  "enum": ["underutilized", "moderate", "saturated"]
+                },
+                "client_opportunity": {
+                  "type": "string",
+                  "enum": ["avoid", "differentiate", "compete", "own"]
+                },
+                "differentiation_angle": { "type": ["string", "null"] }
+              }
+            }
+          },
+          "format_analysis": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["dominant_formats", "underutilized_formats", "format_recommendations"],
+            "properties": {
+              "dominant_formats": { "type": "array", "items": { "type": "string" } },
+              "underutilized_formats": { "type": "array", "items": { "type": "string" } },
+              "format_recommendations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["format", "rationale", "priority"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "format": { "type": "string" },
+                    "rationale": { "type": "string" },
+                    "priority": { "type": "string", "enum": ["high", "medium", "low"] }
+                  }
+                }
+              }
+            }
+          },
+          "engagement_patterns": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "high_performing_themes",
+              "low_performing_themes",
+              "engagement_drivers"
+            ],
+            "properties": {
+              "high_performing_themes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["theme", "examples", "why_it_works"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "theme": { "type": "string" },
+                    "examples": { "type": "array", "items": { "type": "string" } },
+                    "why_it_works": { "type": "string" },
+                    "evidence_codes": { "type": "array", "items": { "type": "string" } }
+                  }
+                }
+              },
+              "low_performing_themes": { "type": "array", "items": { "type": "string" } },
+              "engagement_drivers": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Common elements in high-performing content"
+              }
+            }
+          },
+          "content_gaps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["gap_type", "description", "opportunity_level"],
+              "additionalProperties": false,
+              "properties": {
+                "gap_type": {
+                  "type": "string",
+                  "enum": ["theme_gap", "format_gap", "platform_gap", "audience_gap", "timing_gap"]
+                },
+                "description": { "type": "string" },
+                "opportunity_level": { "type": "string", "enum": ["low", "medium", "high"] },
+                "recommended_action": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "messaging_analysis": {
+        "type": "object",
+        "required": ["value_proposition_comparison", "claim_analysis", "tone_spectrum", "trust_signals"],
+        "additionalProperties": false,
+        "properties": {
+          "value_proposition_comparison": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["brand", "primary_value_prop", "supporting_claims"],
+              "additionalProperties": false,
+              "properties": {
+                "brand": { "type": "string" },
+                "primary_value_prop": { "type": "string" },
+                "supporting_claims": { "type": "array", "items": { "type": "string" } },
+                "proof_points": { "type": "array", "items": { "type": "string" } },
+                "evidence_codes": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "claim_analysis": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "common_claims",
+              "unique_claims",
+              "overclaimed_territory",
+              "unclaimed_territory"
+            ],
+            "properties": {
+              "common_claims": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Claims made by multiple competitors"
+              },
+              "unique_claims": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["brand", "claim"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "brand": { "type": "string" },
+                    "claim": { "type": "string" }
+                  }
+                }
+              },
+              "overclaimed_territory": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Claim areas that are saturated"
+              },
+              "unclaimed_territory": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Potential claim areas no one owns"
+              }
+            }
+          },
+          "tone_spectrum": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["brand", "primary_tone", "secondary_tones"],
+              "additionalProperties": false,
+              "properties": {
+                "brand": { "type": "string" },
+                "primary_tone": { "type": "string" },
+                "secondary_tones": { "type": "array", "items": { "type": "string" } },
+                "tone_distinctiveness": {
+                  "type": "string",
+                  "enum": [
+                    "generic",
+                    "somewhat_distinct",
+                    "distinctive",
+                    "highly_distinctive"
+                  ]
+                }
+              }
+            }
+          },
+          "trust_signals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["signal_type", "competitors_using"],
+              "additionalProperties": false,
+              "properties": {
+                "signal_type": { "type": "string" },
+                "competitors_using": { "type": "array", "items": { "type": "string" } },
+                "effectiveness": { "type": "string", "enum": ["low", "medium", "high"] }
+              }
+            }
+          }
+        }
+      },
+      "gap_analysis": {
+        "type": "object",
+        "required": ["market_gaps", "content_gaps", "positioning_gaps", "service_gaps"],
+        "additionalProperties": false,
+        "properties": {
+          "market_gaps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["gap", "description", "evidence_codes", "opportunity_score"],
+              "additionalProperties": false,
+              "properties": {
+                "gap": { "type": "string" },
+                "description": { "type": "string" },
+                "evidence_codes": { "type": "array", "items": { "type": "string" } },
+                "opportunity_score": { "type": "integer", "description": "1-10 score" },
+                "client_fit": { "type": "string", "enum": ["poor", "moderate", "good", "excellent"] }
+              }
+            }
+          },
+          "content_gaps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["gap", "current_coverage", "opportunity"],
+              "additionalProperties": false,
+              "properties": {
+                "gap": { "type": "string" },
+                "current_coverage": { "type": "string" },
+                "opportunity": { "type": "string" },
+                "recommended_approach": { "type": "string" }
+              }
+            }
+          },
+          "positioning_gaps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["gap", "why_unoccupied", "client_ability_to_fill"],
+              "additionalProperties": false,
+              "properties": {
+                "gap": { "type": "string" },
+                "why_unoccupied": { "type": "string" },
+                "client_ability_to_fill": { "type": "string", "enum": ["low", "medium", "high"] },
+                "required_changes": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "service_gaps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["gap", "demand_signal"],
+              "additionalProperties": false,
+              "properties": {
+                "gap": { "type": "string" },
+                "demand_signal": { "type": "string" },
+                "evidence_codes": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          }
+        }
+      },
+      "strategic_recommendations": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "recommendation",
+            "rationale",
+            "evidence_codes",
+            "priority",
+            "effort",
+            "impact"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "recommendation": { "type": "string" },
+            "rationale": { "type": "string" },
+            "evidence_codes": { "type": "array", "items": { "type": "string" } },
+            "category": {
+              "type": "string",
+              "enum": ["positioning", "content", "messaging", "platform", "differentiation"]
+            },
+            "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+            "effort": { "type": "string", "enum": ["low", "medium", "high"] },
+            "impact": { "type": "string", "enum": ["low", "medium", "high"] },
+            "timeframe": {
+              "type": "string",
+              "enum": ["immediate", "short_term", "medium_term", "long_term"]
+            }
+          }
+        }
+      },
+      "insights": {
+        "type": "array",
+        "description": "Formatted insights for the insights table",
+        "items": {
+          "type": "object",
+          "required": [
+            "title",
+            "finding",
+            "evidence_codes",
+            "confidence",
+            "business_implication",
+            "recommended_action"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "title": { "type": "string" },
+            "finding": { "type": "string" },
+            "evidence_codes": { "type": "array", "items": { "type": "string" } },
+            "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+            "gaps": { "type": "array", "items": { "type": "string" } },
+            "assumptions": { "type": "array", "items": { "type": "string" } },
+            "business_implication": { "type": "string" },
+            "recommended_action": { "type": "string" },
+            "priority": { "type": "string", "enum": ["high", "medium", "low"] }
+          }
+        }
+      }
+    }
+  }
+}
+
