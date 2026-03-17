@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 
@@ -10,7 +11,7 @@ const CreateProjectSchema = z.object({
   project_name: z.string().optional().or(z.literal("")),
 });
 
-export async function createProjectAction(formData: FormData) {
+async function runCreateProject(formData: FormData) {
   const parsed = CreateProjectSchema.safeParse({
     client_id: formData.get("client_id"),
     project_type: formData.get("project_type"),
@@ -23,7 +24,6 @@ export async function createProjectAction(formData: FormData) {
   const { data: userData } = await supabase.auth.getUser();
   if (!userData.user) return { ok: false as const, error: "未登录" };
 
-  // projects 表目前没有 created_by，这里仅依赖 RLS 通过 client 归属判断（迁移里会补）
   const { error } = await supabase.from("projects").insert({
     client_id: parsed.data.client_id,
     project_type: parsed.data.project_type,
@@ -32,7 +32,20 @@ export async function createProjectAction(formData: FormData) {
 
   if (error) return { ok: false as const, error: error.message };
 
-  revalidatePath("/app/projects");
   return { ok: true as const };
+}
+
+/** Form action: must return void (Next.js <form action> typing). */
+export async function createProjectAction(formData: FormData): Promise<void> {
+  const result = await runCreateProject(formData);
+  const clientId = formData.get("client_id");
+  const clientQ =
+    typeof clientId === "string" && clientId.length > 0 ? `client=${encodeURIComponent(clientId)}&` : "";
+
+  if (!result.ok) {
+    redirect(`/app/projects?${clientQ}e=${encodeURIComponent(result.error)}`);
+  }
+  revalidatePath("/app/projects");
+  redirect(`/app/projects?${clientQ}ok=1`);
 }
 

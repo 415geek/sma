@@ -4,9 +4,9 @@ import { createProjectAction } from "./actions";
 export default async function ProjectsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ client?: string }>;
+  searchParams: Promise<{ client?: string; e?: string; ok?: string }>;
 }) {
-  const { client } = await searchParams;
+  const { client, e, ok } = await searchParams;
   const supabase = await createClient();
 
   const { data: clients } = await supabase.from("clients").select("id, brand_name").order("created_at", {
@@ -27,6 +27,16 @@ export default async function ProjectsPage({
 
       <div className="rounded-2xl border bg-white p-5">
         <h2 className="text-sm font-semibold">创建 Project</h2>
+        {e ? (
+          <p className="mt-2 text-sm text-red-600" role="alert">
+            {e}
+          </p>
+        ) : null}
+        {ok ? (
+          <p className="mt-2 text-sm text-green-700" role="status">
+            创建成功
+          </p>
+        ) : null}
         <form action={createProjectAction} className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
           <select
             name="client_id"

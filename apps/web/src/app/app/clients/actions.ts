@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 
@@ -12,7 +13,7 @@ const CreateClientSchema = z.object({
   state: z.string().optional().or(z.literal("")),
 });
 
-export async function createClientAction(formData: FormData) {
+async function runCreateClient(formData: FormData) {
   const parsed = CreateClientSchema.safeParse({
     brand_name: formData.get("brand_name"),
     industry: formData.get("industry"),
@@ -40,7 +41,16 @@ export async function createClientAction(formData: FormData) {
 
   if (error) return { ok: false as const, error: error.message };
 
-  revalidatePath("/app/clients");
   return { ok: true as const };
+}
+
+/** Form action: must return void (Next.js <form action> typing). */
+export async function createClientAction(formData: FormData): Promise<void> {
+  const result = await runCreateClient(formData);
+  if (!result.ok) {
+    redirect(`/app/clients?e=${encodeURIComponent(result.error)}`);
+  }
+  revalidatePath("/app/clients");
+  redirect("/app/clients?ok=1");
 }
 
